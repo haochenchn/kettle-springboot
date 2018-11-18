@@ -1,0 +1,22 @@
+server:
+  port: 8080
+
+spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .html
+  resources:
+          static-locations: classpath:/static/
+
+
+# kettle相关配置
+kettle:
+  filerepository:
+   path: D:/SoftData/Kettle-repo/test
+   id: kettleRepo
+   name: kettleRepo
+   description: 恩施kettle文件资源库
+  log:
+    level: basic  # 目前不考虑，对应nothing  error  minimal  basic  detailed  debug  rowlevel
+    path: D:/log/kettle_log
