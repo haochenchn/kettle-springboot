@@ -1,4 +1,4 @@
-package com.whhx.dataclean.common.util;
+package com.ch.dataclean.common.util;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.web.multipart.MultipartFile;

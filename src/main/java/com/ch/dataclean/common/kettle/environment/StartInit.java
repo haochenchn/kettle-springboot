@@ -1,4 +1,4 @@
-package com.whhx.dataclean.common.kettle.environment;
+package com.ch.dataclean.common.kettle.environment;
 
 import org.springframework.beans.factory.InitializingBean;
 

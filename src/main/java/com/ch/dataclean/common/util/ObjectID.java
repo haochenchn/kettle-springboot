@@ -1,4 +1,4 @@
-package com.whhx.dataclean.common.util;
+package com.ch.dataclean.common.util;
 
 /**
  *      Copyright (C) 2008 10gen Inc.

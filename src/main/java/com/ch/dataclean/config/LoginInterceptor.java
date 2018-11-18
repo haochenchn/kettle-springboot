@@ -1,6 +1,6 @@
-package com.whhx.dataclean.config;
+package com.ch.dataclean.config;
 
-import com.whhx.dataclean.common.util.Constant;
+import com.ch.dataclean.common.util.Constant;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 

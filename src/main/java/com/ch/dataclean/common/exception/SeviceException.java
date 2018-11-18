@@ -1,4 +1,4 @@
-package com.whhx.dataclean.common.exception;
+package com.ch.dataclean.common.exception;
 
 public class SeviceException extends Exception{
 

@@ -1,4 +1,4 @@
-package com.whhx.dataclean.common.util;
+package com.ch.dataclean.common.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JavaType;

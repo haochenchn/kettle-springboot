@@ -1,4 +1,4 @@
-package com.whhx.dataclean.dao;
+package com.ch.dataclean.dao;
 
 public interface DAO {
 

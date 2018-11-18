@@ -1,4 +1,4 @@
-package com.whhx.dataclean.config;
+package com.ch.dataclean.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;

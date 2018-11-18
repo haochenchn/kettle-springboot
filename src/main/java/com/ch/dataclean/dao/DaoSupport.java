@@ -1,4 +1,4 @@
-package com.whhx.dataclean.dao;
+package com.ch.dataclean.dao;
 
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;

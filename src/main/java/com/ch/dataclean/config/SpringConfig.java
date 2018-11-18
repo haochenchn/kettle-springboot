@@ -1,16 +1,8 @@
-package com.whhx.dataclean.config;
+package com.ch.dataclean.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
-import com.whhx.dataclean.common.kettle.environment.StartInit;
+import com.ch.dataclean.common.kettle.environment.StartInit;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.beetl.sql.core.ClasspathLoader;
-import org.beetl.sql.core.Interceptor;
-import org.beetl.sql.core.UnderlinedNameConversion;
-import org.beetl.sql.core.db.MySqlStyle;
-import org.beetl.sql.ext.DebugInterceptor;
-import org.beetl.sql.ext.spring4.BeetlSqlDataSource;
-import org.beetl.sql.ext.spring4.BeetlSqlScannerConfigurer;
-import org.beetl.sql.ext.spring4.SqlManagerFactoryBean;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,7 +14,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
 
@@ -93,5 +84,18 @@ public class SpringConfig {
         return new StartInit();
     }
 
+    /**
+     * 文件上传配置
+     * @return
+     */
+    /*@Bean
+    public MultipartConfigElement multipartConfigElement() {
+        MultipartConfigFactory factory = new MultipartConfigFactory();
+        //单个文件最大
+        factory.setMaxFileSize("10240KB"); //KB,MB
+        /// 设置总上传数据总大小
+        factory.setMaxRequestSize("102400KB");
+        return factory.createMultipartConfig();
+    }*/
 
 }

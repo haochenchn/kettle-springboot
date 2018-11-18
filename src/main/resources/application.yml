@@ -8,6 +8,8 @@ spring:
       suffix: .html
   resources:
           static-locations: classpath:/static/
+  thymeleaf:
+    cache: false
 
 
 # kettle相关配置

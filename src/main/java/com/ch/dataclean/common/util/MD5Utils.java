@@ -1,4 +1,4 @@
-package com.whhx.dataclean.common.util;
+package com.ch.dataclean.common.util;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.ArrayUtils;

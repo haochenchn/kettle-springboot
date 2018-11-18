@@ -1,4 +1,4 @@
-package com.whhx.dataclean.config;
+package com.ch.dataclean.config;
 
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;

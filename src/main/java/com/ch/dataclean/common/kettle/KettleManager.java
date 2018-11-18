@@ -1,6 +1,6 @@
-package com.whhx.dataclean.common.kettle;
+package com.ch.dataclean.common.kettle;
 
-import com.whhx.dataclean.common.exception.KettleDcException;
+import com.ch.dataclean.common.exception.KettleDcException;
 import org.apache.log4j.Logger;
 import org.pentaho.di.cluster.SlaveServer;
 import org.pentaho.di.core.KettleEnvironment;
@@ -27,7 +27,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Iterator;
 import java.util.Map;
-import java.util.stream.Stream;
 
 /**
  * kettle

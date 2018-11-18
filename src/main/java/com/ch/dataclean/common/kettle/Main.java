@@ -1,4 +1,4 @@
-package com.whhx.dataclean.common.kettle;
+package com.ch.dataclean.common.kettle;
 
 import org.pentaho.di.core.KettleEnvironment;
 import org.pentaho.di.core.ProgressNullMonitorListener;

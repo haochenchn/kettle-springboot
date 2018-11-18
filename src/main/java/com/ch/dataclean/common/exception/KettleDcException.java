@@ -1,4 +1,4 @@
-package com.whhx.dataclean.common.exception;
+package com.ch.dataclean.common.exception;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
