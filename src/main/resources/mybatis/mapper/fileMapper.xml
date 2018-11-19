@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="file">
+    <!--查询上传文件-->
+    <select id="findFileById" parameterType="String" resultType="file">
+        SELECT * FROM k_data_file WHERE id = #{_parameter} AND isdelete = 0
+    </select>
+
+    <!--查询上传文件列表-->
+    <select id="findFilesByPid" parameterType="String" resultType="file">
+        SELECT * from k_data_file where pid = #{_parameter} and isdelete = 0
+    </select>
+
+    <!--更新文件导入状态-->
+    <update id="updateFileStatus" parameterType="Map">
+        update k_data_file
+          SET import_status = #{importStatus}
+          <if test="importDesc != null and importDesc != ''">
+              , import_desc = #{importDesc}
+          </if>
+        WHERE id = #{id}
+    </update>
+
+    <insert id="insertFile" useGeneratedKeys="true" keyProperty="id" parameterType="file">
+      INSERT INTO k_data_file
+        (name, path, file_size, pid, dept_id, dept_name,extension,file_desc,import_status,import_desc,createuser)
+      VALUES (#{name,jdbcType=VARCHAR},
+            #{path,jdbcType=VARCHAR},
+            #{fileSize,jdbcType=VARCHAR},
+            #{pid,jdbcType=VARCHAR},
+            #{deptId,jdbcType=VARCHAR},
+            #{deptName,jdbcType=VARCHAR},
+            #{extension,jdbcType=VARCHAR},
+            #{fileDesc,jdbcType=VARCHAR},
+            #{importStatus,jdbcType=VARCHAR},
+            #{importDesc,jdbcType=VARCHAR},
+            #{createuser,jdbcType=VARCHAR})
+    </insert>
+
+</mapper>

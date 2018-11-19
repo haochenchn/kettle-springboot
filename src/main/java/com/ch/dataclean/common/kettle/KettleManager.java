@@ -97,7 +97,7 @@ public class KettleManager {
      * @param jobName
      * @throws Exception
      */
-    public void callJob(String jobPath, String jobName, Map<String,String> namedParams, String[] clParams) throws Exception {
+    public boolean callJob(String jobPath, String jobName, Map<String,String> namedParams, String[] clParams) throws Exception {
         String msg;
         KettleFileRepository repo = this.fileRepositoryCon();
         JobMeta jobMeta = this.loadJob(repo, jobPath, jobName);
@@ -124,6 +124,7 @@ public class KettleManager {
             logger.error(msg);
             throw new KettleDcException(msg);
         }
+        return true;
     }
 
     /**

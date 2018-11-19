@@ -41,7 +41,7 @@ public class SpringConfig {
         Resource[] mapperResources = resolver.getResources("classpath:mybatis/mapper/*.xml");
         bean.setMapperLocations(mapperResources);
         // 设置别名包，便于在mapper.xml文件中ParemeType和resultType不要写完整的包名
-        bean.setTypeAliasesPackage("com.whhx.dataclean.model");
+        bean.setTypeAliasesPackage("com.ch.dataclean.model");
 
         return bean.getObject();
     }

@@ -1,6 +1,9 @@
 server:
   port: 8080
-
+  tomcat:
+    uri-encoding: utf-8
+  servlet:
+    context-path: /dataclean
 spring:
   mvc:
     view:
@@ -10,7 +13,12 @@ spring:
           static-locations: classpath:/static/
   thymeleaf:
     cache: false
-
+  #编码相关
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
 
 # kettle相关配置
 kettle:

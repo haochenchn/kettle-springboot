@@ -5,6 +5,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -74,5 +77,20 @@ public class CommonUtils {
 			resultList.set(startDay, resultList.get(startDay) + 1);
 		}
 		return resultList;
+	}
+
+	/**
+	 * 四舍五入
+	 * @param d
+	 * @param xnum
+	 * @return
+	 */
+	public static double formatDouble(double d, int xnum) {
+		NumberFormat nf = NumberFormat.getNumberInstance();
+		// 保留两位小数
+		nf.setMaximumFractionDigits(xnum);
+		// 如果不需要四舍五入，可以使用RoundingMode.DOWN
+		nf.setRoundingMode(RoundingMode.UP);
+		return Double.parseDouble(nf.format(d));
 	}
 }

@@ -14,6 +14,20 @@ public class Constant extends Const {
 	public static final String DEFAULT_ENCODING = "UTF-8";
 	public static final String SESSION_ID = "SESSION_ID";
 
+	/**
+	 * 文件上传路径（相对于系统基本路径）
+	 */
+	public static final String UPLOAD_PATH = "dataclean/";
+
+	/**
+	 * 文件导入状态
+	 */
+	public static final int IMPORT_STATUS_IMPORTTING = 1;  //导入中
+	public static final int IMPORT_STATUS_ERRORFORMAT = 2;  //数据格式不对
+	public static final int IMPORT_STATUS_SUCCESS = 3;  //已导入
+	public static final int IMPORT_STATUS_ERRORIMPORT = 4;  //导入失败
+
+
 
 	/*public static Properties props;
 

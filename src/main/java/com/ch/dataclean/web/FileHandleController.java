@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping(value = "/fu")
-public class FileHandleController {
+public class FileHandleController extends BaseController {
     @Autowired
     private FileHandleService fileHandleService;
 
@@ -17,25 +17,27 @@ public class FileHandleController {
      * 实现文件上传
      */
     @PostMapping("/fileUpload")
-    public String fileUpload(@RequestParam("fileName") MultipartFile file, String typeId, Model model){
-        String message = "success";
-        if(file.isEmpty()){
-            message = "The file is empty!";
-        }else {
+    @ResponseBody
+    public Object fileUpload(@RequestParam("fileName") MultipartFile file, String typeId, Model model){
+        if(!file.isEmpty()){
             try {
                 fileHandleService.fileUpload(file, typeId);
+                return data(success(),"文件上传成功");
             } catch (Exception e) {
                 e.printStackTrace();
+                return data(error(),e.getMessage());
             }
+        }else {
+            return data(error(),"庆不要上传空文件");
         }
-        model.addAttribute("message",message);
-        return "/uploadStatus";
     }
 
-    @GetMapping("/toUploadStatus")
-    public String toUploadStatus(Model model){
-        model.addAttribute("message", "The file is empty!");
-        return "/uploadStatus";
+    @RequestMapping("/toUploadStatus")
+    @ResponseBody
+    public Object toUploadStatus(){
+        /*model.addAttribute("message", "The file is empty!");
+        return "/uploadStatus";*/
+        return data(success(),"这仅仅是一个测试");
     }
 
     @RequestMapping(value = "/testTrans")

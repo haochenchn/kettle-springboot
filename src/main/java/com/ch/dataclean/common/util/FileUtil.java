@@ -306,4 +306,29 @@ public class FileUtil {
         }
         return file;
     }
+
+    /**
+     * 获取文件基本路径
+     * @return
+     */
+    public static String getBasePath(){
+        return isLinux() ? "/home/upload/" : "D:/hx/upload/";
+    }
+
+    /**
+     * 获取文件基本路径
+     * @return
+     */
+    public static String getBasePath(String path){
+        String basePath = isLinux() ? "/home/upload/" : "D:/hx/upload/";
+        return basePath + path;
+    }
+
+    /**
+     * 判断是否是linux系统
+     * @return
+     */
+    public static boolean isLinux(){
+        return System.getProperty("os.name").toLowerCase().indexOf("linux") >= 0;
+    }
 }
