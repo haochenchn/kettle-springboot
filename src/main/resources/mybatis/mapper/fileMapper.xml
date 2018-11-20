@@ -7,8 +7,12 @@
     </select>
 
     <!--查询上传文件列表-->
-    <select id="findFilesByPid" parameterType="long" resultType="file">
-        SELECT * from k_data_file where pid = #{_parameter} and isdelete = 0
+    <select id="findFiles" parameterType="map" resultType="file">
+        SELECT * from k_data_file where pid = #{pid} and isdelete = 0
+        <if test="search != null and search != ''">
+            AND (name LIKE '%${search}%' OR file_desc like '%${search}%'
+            OR dept_name LIKE '%${search}%')
+        </if>
     </select>
 
     <!--更新文件导入状态-->

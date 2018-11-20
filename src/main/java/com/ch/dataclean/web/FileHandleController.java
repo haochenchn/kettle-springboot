@@ -27,7 +27,7 @@ public class FileHandleController extends BaseController {
     public String toUpload(Model model){
         try {
             List<DataDeptModel> depts = dataDeptService.getDepts();
-            List<FileModel> files = fileHandleService.getFilesByPid(0L);
+            List<FileModel> files = fileHandleService.getFiles(null,0L);
             model.addAttribute("files", files);
             model.addAttribute("depts", depts);
         } catch (Exception e) {
@@ -57,12 +57,12 @@ public class FileHandleController extends BaseController {
 
     /**
      * 根据pid查询文件目录
-     * @return
+     * search可以是文件名、部门名或描述
      */
-    @RequestMapping(value = "/getFilesByPid")
-    public Object getFilesByPid(long pid){
+    @RequestMapping(value = "/getFiles")
+    public Object getFiles(String search, long pid){
         try {
-            List<FileModel> files = fileHandleService.getFilesByPid(pid);
+            List<FileModel> files = fileHandleService.getFiles(search, pid);
             return data(success(), files);
         } catch (Exception e) {
             e.printStackTrace();

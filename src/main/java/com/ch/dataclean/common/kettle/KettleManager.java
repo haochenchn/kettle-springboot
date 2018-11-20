@@ -97,14 +97,14 @@ public class KettleManager {
      * @param jobName
      * @throws Exception
      */
-    public boolean callJob(String jobPath, String jobName, Map<String,String> namedParams, String[] clParams) throws Exception {
+    public boolean callJob(String jobPath, String jobName, Map<String,String> variables, String[] clParams) throws Exception {
         String msg;
         KettleFileRepository repo = this.fileRepositoryCon();
         JobMeta jobMeta = this.loadJob(repo, jobPath, jobName);
         Job job = new Job(repo, jobMeta);
         //向Job 脚本传递参数，脚本中获取参数值：${参数名}
-        if(null != namedParams) {
-            for(Iterator<Map.Entry<String, String>> it = namedParams.entrySet().iterator(); it.hasNext();){
+        if(null != variables) {
+            for(Iterator<Map.Entry<String, String>> it = variables.entrySet().iterator(); it.hasNext();){
                 Map.Entry<String, String> entry = it.next();
                 job.setVariable(entry.getKey(), entry.getValue());
             }

@@ -84,10 +84,11 @@ public class FileHandleServiceImpl implements FileHandleService {
             //单独启一个线程跑kettle
             new Thread(()->{
                 //执行kettle脚本
-                Map<String,String> namedParam = new HashMap<>();
-                namedParam.put("param","D:/Test");
+                Map<String,String> variables = new HashMap<>();
+                //传入文件解压出来后的路径
+                variables.put("param",FileUtil.getBasePath(relativePath.toString()));
                 try{
-                    boolean re = kettleManager.callJob("/test","数据导入job",namedParam, null);
+                    boolean re = kettleManager.callJob(dept.getKettleJobPath(),dept.getKettleJobName(),variables, null);
                     if(re){
                         //更新状态为导入成功
                         this.updateFileStatus(pFile.getId(),Constant.IMPORT_STATUS_SUCCESS,"");
@@ -189,10 +190,11 @@ public class FileHandleServiceImpl implements FileHandleService {
     }
 
     @SuppressWarnings("unchecked")
-    public List<FileModel> getFilesByPid(long pid) throws Exception{
-        /*Map<String, Object> param = new HashMap<>();
-        param.put("pid", pid);*/
-        return (List<FileModel>) dao.findForList("file.findFilesByPid", pid);
+    public List<FileModel> getFiles(String search, long pid) throws Exception{
+        Map<String, Object> param = new HashMap<>();
+        param.put("search", search);
+        param.put("pid", pid);
+        return (List<FileModel>) dao.findForList("file.findFiles", param);
     }
 
     /*===========================以下是测试========================*/

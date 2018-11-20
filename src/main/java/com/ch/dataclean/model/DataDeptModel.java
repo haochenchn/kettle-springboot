@@ -10,6 +10,8 @@ import org.apache.ibatis.type.Alias;
 public class DataDeptModel extends BaseModel {
     private String name;
     private String description;
+    private String kettleJobName; //该部门对应的kettle导入job名
+    private String kettleJobPath; //资源库内job相对路径，默认为/
 
     public DataDeptModel() {
     }
@@ -28,5 +30,21 @@ public class DataDeptModel extends BaseModel {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getKettleJobName() {
+        return kettleJobName;
+    }
+
+    public void setKettleJobName(String kettleJobName) {
+        this.kettleJobName = kettleJobName;
+    }
+
+    public String getKettleJobPath() {
+        return kettleJobPath;
+    }
+
+    public void setKettleJobPath(String kettleJobPath) {
+        this.kettleJobPath = kettleJobPath;
     }
 }

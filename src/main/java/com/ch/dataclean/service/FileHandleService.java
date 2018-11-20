@@ -17,7 +17,7 @@ public interface FileHandleService {
      * @return
      * @throws Exception
      */
-    List<FileModel> getFilesByPid(long pid) throws Exception;
+    List<FileModel> getFiles(String search, long pid) throws Exception;
 
     Object testTrans();
     Object testJob();
