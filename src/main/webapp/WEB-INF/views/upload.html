@@ -3,12 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <!--<link rel="stylesheet" th:href="@{/upload.css}">-->
+    <style>
+        *{
+            margin:0;
+            padding: 0;
+        }
+        input,button,select{
+            outline: none;
+        }
+        .uploadTitle {
+            margin:0;
+            padding: 20px 0px 20px 20px;
+            background: #0a6aa1;
+            color: white;
+            font-size: 20px;
+        }
+        .uploadForm{
+            box-sizing: border-box;
+            margin: 20px 20px 20px 22px;
+            width: 97%;
+            height: 70px;
+            line-height: 70px;
+            background: #f2f2f2;
+            padding-left: 30px;
+        }
+        .title{
+            display: inline-block;
+            font-size: 16px;
+            margin-right: 30px;
+        }
+        .control-label{
+            margin-right: 10px;
+        }
+        .form-control{
+            padding: 3px 8px;
+            width: 150px;
+        }
+        .fileInput{
+            width: 200px;
+            background: white;
+        }
+        .describe{
+            border: 0;
+            height: 18px;
+        }
+        .submitBtn{
+            width: 80px;
+            height: 24px;
+            background: #e59906;
+            border: 0;
+            color:white;
+        }
+        .uploadBtn{
+            width: 80px;
+            height: 24px;
+            background: #2d82e5;
+            border: 0;
+            color:white;
+        }
+        .tableWrap{
+            border-collapse: collapse;
+            border: 0;
+            width: 97%;
+            margin: 0 0 0 22px;
+        }
+        .tableWrap th{
+            height: 30px;
+            background: #f2f2f2;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .tableWrap td{
+            height: 35px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-<h1 th:inlines="text">数据文件上传</h1>
-<form id="uploadForm" action="fileUpload" method="post" enctype="multipart/form-data">
+<h1 class="uploadTitle" th:inlines="text">数据文件上传</h1>
+<form class="uploadForm" action="file/fileUpload" method="post" enctype="multipart/form-data">
     <!--<input type="text" name="typeId" value="1" />-->
-    <div>
+    <div class="title">
         <label for="uploadForm" class="control-label">部门:</label>
         <select class="form-control" name="deptId">
             <option>请选择部门</option>
@@ -16,14 +92,22 @@
         </select>
     </div>
 
-    <div>选择文件: <input type="file" name="file"/></div>
+    <div class="title"><span class="control-label">选择文件: </span><input class="fileInput" type="file" name="file"/></div>
     <!--<p>选择文件2: <input type="file" name="fileName"/></p>
     <p>选择文件3: <input type="file" name="fileName"/></p>-->
-    <div><input type="submit" value="提交"/></div>
+    <div class="title">
+        <label for="uploadForm" class="control-label" placeholder="">文件描述:</label>
+        <input class="form-control describe"/>
+    </div>
+    <div class="title"><input class="submitBtn" type="submit" value="提&nbsp;交"/></div>
+    <div class="title">
+        <input class="form-control describe"/>
+    </div>
+    <div class="title"><input class="submitBtn" type="submit" value="搜&nbsp;索"/></div>
+    <div class="title"><input class="uploadBtn" type="submit" value="上&nbsp;传"/></div>
 </form>
-
 <div>
-    <table border="1">
+    <table class="tableWrap" border="1">
         <tr>
             <th>序号</th>
             <th>文件名</th>
@@ -36,10 +120,10 @@
         <tr  th:each="file,infoStat : ${files}" >
             <td th:text="${infoStat.count}"></td>
             <td th:text="${file.name}"></td>
-            <th th:text="${file.fileSize}+'k'"></th>
-            <th th:text="${file.deptName}"></th>
-            <th th:text="${file.fileDesc}"></th>
-            <th>
+            <td th:text="${file.fileSize}+'k'"></td>
+            <td th:text="${file.deptName}"></td>
+            <td th:text="${file.fileDesc}"></td>
+            <td>
             <div th:switch="${file.importStatus}">
                 <p th:case=1>正在导入</p>
                 <p th:case=2>数据格式不对</p>
@@ -47,10 +131,15 @@
                 <p th:case=4>导入失败</p>
                 <p th:case="*"></p>
             </div>
-            </th>
-            <th th:text="${file.importDesc}"></th>
+            </td>
+            <td th:text="${file.importDesc}"></td>
         </tr>
     </table>
-
+    <script th:src="@{/jquery.min.js}"></script>
+    <script th:src="@{/layer/layer.min.js}"></script>
+    <script>
+        var a = $("#uploadForm");
+        console.log(a)
+    </script>
 </body>
 </html>
