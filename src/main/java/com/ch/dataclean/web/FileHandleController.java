@@ -41,10 +41,10 @@ public class FileHandleController extends BaseController {
      */
     @RequestMapping(value = "/fileUpload")
     @ResponseBody
-    public Object fileUpload(@RequestParam("file") MultipartFile file, String deptId){
+    public Object fileUpload(@RequestParam("file") MultipartFile file, String deptId, String desc){
         if(!file.isEmpty()){
             try {
-                fileHandleService.fileUpload(file, deptId);
+                fileHandleService.fileUpload(file, deptId, desc);
                 return data(success(),"文件上传成功");
             } catch (Exception e) {
                 e.printStackTrace();

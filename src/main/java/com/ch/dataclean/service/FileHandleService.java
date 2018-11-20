@@ -10,7 +10,7 @@ public interface FileHandleService {
     /**
      * 文件上传
      */
-    FileModel fileUpload(MultipartFile file, String deptId) throws Exception;
+    FileModel fileUpload(MultipartFile file, String deptId, String desc) throws Exception;
 
     /**
      * 获取文件列表

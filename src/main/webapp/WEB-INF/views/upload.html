@@ -82,7 +82,7 @@
 </head>
 <body>
 <h1 class="uploadTitle" th:inlines="text">数据文件上传</h1>
-<form class="uploadForm" action="file/fileUpload" method="post" enctype="multipart/form-data">
+<form class="uploadForm" action="fileUpload" method="post" enctype="multipart/form-data">
     <!--<input type="text" name="typeId" value="1" />-->
     <div class="title">
         <label for="uploadForm" class="control-label">部门:</label>
@@ -97,7 +97,7 @@
     <p>选择文件3: <input type="file" name="fileName"/></p>-->
     <div class="title">
         <label for="uploadForm" class="control-label" placeholder="">文件描述:</label>
-        <input class="form-control describe"/>
+        <input class="form-control describe" name="desc"/>
     </div>
     <div class="title"><input class="submitBtn" type="submit" value="提&nbsp;交"/></div>
     <div class="title">
@@ -124,13 +124,13 @@
             <td th:text="${file.deptName}"></td>
             <td th:text="${file.fileDesc}"></td>
             <td>
-            <div th:switch="${file.importStatus}">
-                <p th:case=1>正在导入</p>
-                <p th:case=2>数据格式不对</p>
-                <p th:case=3>已导入</p>
-                <p th:case=4>导入失败</p>
-                <p th:case="*"></p>
-            </div>
+                <div th:switch="${file.importStatus}">
+                    <p th:case=1>正在导入</p>
+                    <p th:case=2>数据格式不对</p>
+                    <p th:case=3>已导入</p>
+                    <p th:case=4>导入失败</p>
+                    <p th:case="*"></p>
+                </div>
             </td>
             <td th:text="${file.importDesc}"></td>
         </tr>

@@ -44,7 +44,7 @@ public class FileHandleServiceImpl implements FileHandleService {
     private DataDeptService dataDeptService;
 
     @Override
-    public FileModel fileUpload(MultipartFile file, String deptId) throws Exception {
+    public FileModel fileUpload(MultipartFile file, String deptId, String desc) throws Exception {
         String fileName = file.getOriginalFilename();
         if (!fileName.endsWith("zip")) {
             throw new BaseException(fileName+ "文件格式不是zip文件");
@@ -71,6 +71,7 @@ public class FileHandleServiceImpl implements FileHandleService {
         pFile.setDeptName(dept.getName());
         pFile.setPid(0); //zip文件父id为0
         pFile.setImportStatus(1);
+        pFile.setFileDesc(desc);
         this.saveFileModel(pFile);
         List<FileModel> cFiles = this.getUnzipedFiles(file, pFile);
         if(null == cFiles || 0 == cFiles.size()){
@@ -82,21 +83,26 @@ public class FileHandleServiceImpl implements FileHandleService {
             //保存文件
             this.writeToFile(cFiles);
             //单独启一个线程跑kettle
+            //线程内要用到的值，设为final
+            final String t_relative_path = relativePath.toString();
+            final String t_job_path = dept.getKettleJobPath();
+            final String t_job_name = dept.getKettleJobName();
+            final long t_fileid = pFile.getId();
             new Thread(()->{
                 //执行kettle脚本
                 Map<String,String> variables = new HashMap<>();
                 //传入文件解压出来后的路径
-                variables.put("param",FileUtil.getBasePath(relativePath.toString()));
+                variables.put("param",FileUtil.getBasePath(t_relative_path));
                 try{
-                    boolean re = kettleManager.callJob(dept.getKettleJobPath(),dept.getKettleJobName(),variables, null);
+                    boolean re = kettleManager.callJob(t_job_path,t_job_name,variables, null);
                     if(re){
                         //更新状态为导入成功
-                        this.updateFileStatus(pFile.getId(),Constant.IMPORT_STATUS_SUCCESS,"");
+                        this.updateFileStatus(t_fileid,Constant.IMPORT_STATUS_SUCCESS,"");
                     }
                 }catch (Exception e){
                     //更新状态为导入失败
                     try {
-                        this.updateFileStatus(pFile.getId(),Constant.IMPORT_STATUS_ERRORIMPORT,"");
+                        this.updateFileStatus(t_fileid,Constant.IMPORT_STATUS_ERRORIMPORT,"");
                     } catch (Exception e1) {
                         e1.printStackTrace();
                     }
