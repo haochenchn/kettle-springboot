@@ -7,7 +7,7 @@
     </select>
 
     <select id="findAllDepts" resultType="dataDept">
-        SELECT * from k_data_dept
+        SELECT * from k_data_dept WHERE isdelete = 0
     </select>
 
 </mapper>

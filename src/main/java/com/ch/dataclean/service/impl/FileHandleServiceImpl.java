@@ -2,6 +2,7 @@ package com.ch.dataclean.service.impl;
 
 import com.ch.dataclean.common.exception.BaseException;
 import com.ch.dataclean.common.kettle.KettleManager;
+import com.ch.dataclean.common.util.CommonUtils;
 import com.ch.dataclean.common.util.Constant;
 import com.ch.dataclean.common.util.FileUtil;
 import com.ch.dataclean.common.util.FormatCheckUtil;
@@ -65,11 +66,11 @@ public class FileHandleServiceImpl implements FileHandleService {
         pFile.setName(fileName);
         pFile.setPath(relativePath.toString());
         pFile.setExtension(extension);
-        pFile.setFileSize(size);
+        pFile.setFileSize(CommonUtils.formatDouble(size/1024, 2));
         pFile.setDeptId(deptId);
         pFile.setDeptName(dept.getName());
-        pFile.setPid("0"); //zip文件父id为0
-        pFile.setImportStatus("1");
+        pFile.setPid(0); //zip文件父id为0
+        pFile.setImportStatus(1);
         this.saveFileModel(pFile);
         List<FileModel> cFiles = this.getUnzipedFiles(file, pFile);
         if(null == cFiles || 0 == cFiles.size()){
@@ -132,7 +133,7 @@ public class FileHandleServiceImpl implements FileHandleService {
             cFile.setName(fileName);
             cFile.setPath(pFile.getPath());
             cFile.setExtension(fileName.substring(fileName.lastIndexOf(".")+1));
-            cFile.setFileSize(size);
+            cFile.setFileSize(CommonUtils.formatDouble(size/1024, 2));
             cFile.setDeptId(pFile.getDeptId());
             cFile.setDeptName(pFile.getDeptName());
             cFile.setPid(pFile.getId()); //zip文件父id为0
@@ -159,7 +160,7 @@ public class FileHandleServiceImpl implements FileHandleService {
      * @param desc
      * @throws Exception
      */
-    public void updateFileStatus(String id, int status, String desc) throws Exception{
+    public void updateFileStatus(long id, int status, String desc) throws Exception{
         Map<String,Object> param = new HashMap<>();
         param.put("id",id);
         param.put("importStatus",status);
@@ -187,6 +188,14 @@ public class FileHandleServiceImpl implements FileHandleService {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    public List<FileModel> getFilesByPid(long pid) throws Exception{
+        /*Map<String, Object> param = new HashMap<>();
+        param.put("pid", pid);*/
+        return (List<FileModel>) dao.findForList("file.findFilesByPid", pid);
+    }
+
+    /*===========================以下是测试========================*/
     public Object testTrans(){
         Map<String, String> mmcsMap = new HashMap<>();
         mmcsMap.put("param", "D:/Test");

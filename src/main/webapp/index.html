@@ -1,17 +1,1 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<h1 th:inlines="text">数据文件上传</h1>
-<form action="fu/fileUpload" method="post" enctype="multipart/form-data">
-    <input type="text" name="typeId" value="1" />
-    <p>选择文件: <input type="file" name="fileName"/></p>
-    <!--<p>选择文件2: <input type="file" name="fileName"/></p>
-    <p>选择文件3: <input type="file" name="fileName"/></p>-->
-    <p><input type="submit" value="提交"/></p>
-</form>
-</body>
-</html>
+<script>window.location.href="file/toUpload";</script>

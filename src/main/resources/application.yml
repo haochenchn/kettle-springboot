@@ -2,17 +2,13 @@ server:
   port: 8080
   tomcat:
     uri-encoding: utf-8
-  servlet:
-    context-path: /dataclean
 spring:
-  mvc:
-    view:
-      prefix: /WEB-INF/views/
-      suffix: .html
   resources:
           static-locations: classpath:/static/
   thymeleaf:
     cache: false
+    prefix: /WEB-INF/views/
+    suffix: .html
   #编码相关
   http:
     encoding:

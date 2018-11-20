@@ -2,12 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="file">
     <!--查询上传文件-->
-    <select id="findFileById" parameterType="String" resultType="file">
+    <select id="findFileById" parameterType="long" resultType="file">
         SELECT * FROM k_data_file WHERE id = #{_parameter} AND isdelete = 0
     </select>
 
     <!--查询上传文件列表-->
-    <select id="findFilesByPid" parameterType="String" resultType="file">
+    <select id="findFilesByPid" parameterType="long" resultType="file">
         SELECT * from k_data_file where pid = #{_parameter} and isdelete = 0
     </select>
 

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1 th:inlines="text">数据文件上传</h1>
+<form id="uploadForm" action="file/fileUpload" method="post" enctype="multipart/form-data">
+    <!--<input type="text" name="typeId" value="1" />-->
+    <div>
+        <label for="uploadForm" class="control-label">部门:</label>
+        <select class="form-control" name="deptId">
+            <option>请选择部门</option>
+            <option  th:each="depts:${depts}" th:value="${depts.id}" th:text="${depts.name }"></option>
+        </select>
+    </div>
+
+    <div>选择文件: <input type="file" name="file"/></div>
+    <!--<p>选择文件2: <input type="file" name="fileName"/></p>
+    <p>选择文件3: <input type="file" name="fileName"/></p>-->
+    <div><input type="submit" value="提交"/></div>
+</form>
+
+<div>
+    <table border="1">
+        <tr>
+            <th>序号</th>
+            <th>文件名</th>
+            <th>文件大小</th>
+            <th>部门</th>
+            <th>描述</th>
+            <th>导入状态</th>
+            <th>导入备注</th>
+        </tr>
+        <tr  th:each="file,infoStat : ${files}" >
+            <td th:text="${infoStat.count}"></td>
+            <td th:text="${file.name}"></td>
+            <th th:text="${file.fileSize}+'k'"></th>
+            <th th:text="${file.deptName}"></th>
+            <th th:text="${file.fileDesc}"></th>
+            <th>
+            <div th:switch="${file.importStatus}">
+                <p th:case=1>正在导入</p>
+                <p th:case=2>数据格式不对</p>
+                <p th:case=3>已导入</p>
+                <p th:case=4>导入失败</p>
+                <p th:case="*"></p>
+            </div>
+            </th>
+            <th th:text="${file.importDesc}"></th>
+        </tr>
+    </table>
+
+</body>
+</html>
