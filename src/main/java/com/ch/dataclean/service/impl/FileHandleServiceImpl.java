@@ -5,13 +5,13 @@ import com.ch.dataclean.common.kettle.KettleManager;
 import com.ch.dataclean.common.util.CommonUtils;
 import com.ch.dataclean.common.util.Constant;
 import com.ch.dataclean.common.util.FileUtil;
-import com.ch.dataclean.common.util.FormatCheckUtil;
 import com.ch.dataclean.dao.DaoSupport;
 import com.ch.dataclean.model.DataDeptModel;
 import com.ch.dataclean.model.DataFormatCheckResultVo;
 import com.ch.dataclean.model.FileModel;
 import com.ch.dataclean.service.DataDeptService;
 import com.ch.dataclean.service.FileHandleService;
+import com.ch.dataclean.service.FormatCheckService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,9 +42,11 @@ public class FileHandleServiceImpl implements FileHandleService {
 
     @Autowired
     private DataDeptService dataDeptService;
+    @Autowired
+    private FormatCheckService formatCheckService;
 
     @Override
-    public FileModel fileUpload(MultipartFile file, String deptId, String desc) throws Exception {
+    public FileModel fileUpload(MultipartFile file, long deptId, String desc) throws Exception {
         String fileName = file.getOriginalFilename();
         if (!fileName.endsWith("zip")) {
             throw new BaseException(fileName+ "文件格式不是zip文件");
@@ -77,12 +79,12 @@ public class FileHandleServiceImpl implements FileHandleService {
         if(null == cFiles || 0 == cFiles.size()){
             throw new BaseException(fileName + "文件解压失败！");
         }
-        //数据格式检查
-        DataFormatCheckResultVo result = FormatCheckUtil.formatCheck(deptId, cFiles);
+        //******************************数据格式检查**************************************
+        DataFormatCheckResultVo result = formatCheckService.formatCheck(deptId, cFiles);
         if(result.isResult()){ //格式校验通过
-            //保存文件
+            //***************************保存文件***************************************
             this.writeToFile(cFiles);
-            //单独启一个线程跑kettle
+            //***************************单独启一个线程跑kettle*************************
             //线程内要用到的值，设为final
             final String t_relative_path = relativePath.toString();
             final String t_job_path = dept.getKettleJobPath();

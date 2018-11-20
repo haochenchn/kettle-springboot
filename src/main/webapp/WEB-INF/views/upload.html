@@ -82,7 +82,7 @@
 </head>
 <body>
 <h1 class="uploadTitle" th:inlines="text">数据文件上传</h1>
-<form class="uploadForm" action="fileUpload" method="post" enctype="multipart/form-data">
+<form class="uploadForm" th:action="@{/file/fileUpload}" method="post" enctype="multipart/form-data">
     <!--<input type="text" name="typeId" value="1" />-->
     <div class="title">
         <label for="uploadForm" class="control-label">部门:</label>

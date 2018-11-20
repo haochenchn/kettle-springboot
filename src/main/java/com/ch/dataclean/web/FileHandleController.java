@@ -41,7 +41,7 @@ public class FileHandleController extends BaseController {
      */
     @RequestMapping(value = "/fileUpload")
     @ResponseBody
-    public Object fileUpload(@RequestParam("file") MultipartFile file, String deptId, String desc){
+    public Object fileUpload(@RequestParam("file") MultipartFile file, long deptId, String desc){
         if(!file.isEmpty()){
             try {
                 fileHandleService.fileUpload(file, deptId, desc);
