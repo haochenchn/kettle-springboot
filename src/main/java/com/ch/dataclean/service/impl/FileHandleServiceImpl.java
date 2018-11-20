@@ -80,19 +80,27 @@ public class FileHandleServiceImpl implements FileHandleService {
         if(result.isResult()){ //格式校验通过
             //保存文件
             this.writeToFile(cFiles);
-            //TODO 执行kettle脚本
-            Map<String,String> namedParam = new HashMap<>();
-            namedParam.put("param","D:/Test");
-            try{
-                boolean re = kettleManager.callJob("/test","数据导入job",namedParam, null);
-                if(re){
-                    //更新文件状态为导入成功
-                    this.updateFileStatus(pFile.getId(),Constant.IMPORT_STATUS_SUCCESS,"");
+            //单独启一个线程跑kettle
+            new Thread(()->{
+                //执行kettle脚本
+                Map<String,String> namedParam = new HashMap<>();
+                namedParam.put("param","D:/Test");
+                try{
+                    boolean re = kettleManager.callJob("/test","数据导入job",namedParam, null);
+                    if(re){
+                        //更新状态为导入成功
+                        this.updateFileStatus(pFile.getId(),Constant.IMPORT_STATUS_SUCCESS,"");
+                    }
+                }catch (Exception e){
+                    //更新状态为导入失败
+                    try {
+                        this.updateFileStatus(pFile.getId(),Constant.IMPORT_STATUS_ERRORIMPORT,"");
+                    } catch (Exception e1) {
+                        e1.printStackTrace();
+                    }
+                    e.printStackTrace();
                 }
-            }catch (Exception e){
-                this.updateFileStatus(pFile.getId(),Constant.IMPORT_STATUS_ERRORIMPORT,"");
-                e.printStackTrace();
-            }
+            }).start();
         }else { //校验不通过
             this.updateFileStatus(pFile.getId(),Constant.IMPORT_STATUS_ERRORFORMAT, result.getRemark());
             throw new BaseException(result.getRemark());
