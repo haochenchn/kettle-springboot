@@ -2,9 +2,8 @@ server:
   port: 8080
   tomcat:
     uri-encoding: utf-8
+
 spring:
-  resources:
-    static-locations: classpath:/static/
   thymeleaf:
     cache: false #缓冲的配置
     check-template: true
