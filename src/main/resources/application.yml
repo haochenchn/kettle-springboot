@@ -4,11 +4,18 @@ server:
     uri-encoding: utf-8
 spring:
   resources:
-          static-locations: classpath:/static/
+    static-locations: classpath:/static/
   thymeleaf:
-    cache: false
+    cache: false #缓冲的配置
+    check-template: true
+    check-template-location: true
+    #开启MVC thymeleaf 视图解析
+    enabled: true
+    encoding: UTF-8
+    mode: HTML5
     prefix: /WEB-INF/views/
     suffix: .html
+
   #编码相关
   http:
     encoding:

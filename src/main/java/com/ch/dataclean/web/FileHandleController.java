@@ -55,6 +55,21 @@ public class FileHandleController extends BaseController {
         }
     }
 
+    /**
+     * 根据pid查询文件目录
+     * @return
+     */
+    @RequestMapping(value = "/getFilesByPid")
+    public Object getFilesByPid(long pid){
+        try {
+            List<FileModel> files = fileHandleService.getFilesByPid(pid);
+            return data(success(), files);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return error();
+        }
+    }
+
     @RequestMapping("/toUploadStatus")
     @ResponseBody
     public Object toUploadStatus(){
