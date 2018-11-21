@@ -5,7 +5,7 @@
 <configuration>
     <!--这里的内容就和我们正常开发ssm框架里面想设置的内容类似-->
     <settings>
-        <!-- 驼峰的自动映射 -->
+        <!-- 使用驼峰命名法转换字段。 -->
         <setting name="mapUnderscoreToCamelCase" value="true" />
         <setting name="cacheEnabled" value="true" /><!-- 全局映射器启用缓存 -->
         <setting name="useGeneratedKeys" value="true" />
@@ -13,4 +13,18 @@
         <!--控制台打印sql-->
         <setting name="logImpl" value="STDOUT_LOGGING"/>
     </settings>
+    <plugins>
+        <!-- com.github.pagehelper为PageHelper类所在包名 -->
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+            <!-- 4.0.0以后版本可以不设置该参数 -->
+            <!-- 设置数据库类型 Oracle,Mysql,MariaDB,SQLite,Hsqldb,PostgreSQL六种数据库-->
+            <!--<property name="helperDialect" value="mysql"/>-->
+
+            <!-- 3.3.0版本可用 - 分页参数合理化，默认false禁用 -->
+            <!-- 启用合理化时，如果pageNum<1会查询第一页，如果pageNum>pages会查询最后一页 -->
+            <!-- 禁用合理化时，如果pageNum<1或pageNum>pages会返回空数据 -->
+            <property name="reasonable" value="true"/>
+        </plugin>
+    </plugins>
+
 </configuration>

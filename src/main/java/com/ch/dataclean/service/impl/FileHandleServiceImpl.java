@@ -2,6 +2,7 @@ package com.ch.dataclean.service.impl;
 
 import com.ch.dataclean.common.exception.BaseException;
 import com.ch.dataclean.common.kettle.KettleManager;
+import com.ch.dataclean.common.page.Page;
 import com.ch.dataclean.common.util.CommonUtils;
 import com.ch.dataclean.common.util.Constant;
 import com.ch.dataclean.common.util.FileUtil;
@@ -13,6 +14,8 @@ import com.ch.dataclean.model.FileModel;
 import com.ch.dataclean.service.DataDeptService;
 import com.ch.dataclean.service.FileHandleService;
 import com.ch.dataclean.service.FormatCheckService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -200,11 +203,14 @@ public class FileHandleServiceImpl implements FileHandleService {
     }
 
     @SuppressWarnings("unchecked")
-    public List<FileModel> getFiles(String search, String pid) throws Exception{
+    public PageInfo<FileModel> getFiles(String search, String pid, Page page) throws Exception{
         Map<String, String> param = new HashMap<>();
         param.put("search", search);
         param.put("pid", pid);
-        return (List<FileModel>) dao.findForList("file.findFiles", param);
+        PageHelper.startPage(page.getPageNum(),page.getPageSize(),"createtime desc");
+        List<FileModel> list = (List<FileModel>) dao.findForList("file.findFiles", param);
+        PageInfo<FileModel> pageInfo = new PageInfo<>(list);
+        return pageInfo;
     }
 
     public ResponseEntity<byte[]> downloadTemplateFile(String deptId) throws Exception {

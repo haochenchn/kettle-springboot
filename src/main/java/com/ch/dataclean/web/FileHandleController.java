@@ -1,19 +1,19 @@
 package com.ch.dataclean.web;
 
+import com.ch.dataclean.common.page.Page;
 import com.ch.dataclean.common.util.CommonUtils;
 import com.ch.dataclean.model.DataDeptModel;
 import com.ch.dataclean.model.FileModel;
 import com.ch.dataclean.service.DataDeptService;
 import com.ch.dataclean.service.FileHandleService;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/file")
@@ -64,10 +64,11 @@ public class FileHandleController extends BaseController {
      * search可以是文件名、部门名或描述
      */
     @RequestMapping(value = "/getFiles")
-    public Object getFiles(String search, String pid, Model model){
+    public Object getFiles(String search, String pid, Page page, Model model){
         try {
-            List<FileModel> files = fileHandleService.getFiles(search, pid);
-            model.addAttribute("files",files);
+             //Page page = new Page();
+            PageInfo<FileModel> pageInfo = fileHandleService.getFiles(search, pid,page);
+            model.addAttribute("files",pageInfo.getList());
             return "upload::table_refresh";
         } catch (Exception e) {
             e.printStackTrace();
@@ -79,10 +80,10 @@ public class FileHandleController extends BaseController {
      * search可以是文件名、部门名或描述
      */
     @RequestMapping(value = "/getFilesc")
-    public Object getFilesc(String search, String pid, Model model){
+    public Object getFilesc(String search, String pid, Page page, Model model){
         try {
-            List<FileModel> files = fileHandleService.getFiles(search, pid);
-            model.addAttribute("files",files);
+            PageInfo<FileModel> pageInfo = fileHandleService.getFiles(search, pid,page);
+            model.addAttribute("files",pageInfo.getList());
             return "upload::tablec_refresh";
         } catch (Exception e) {
             e.printStackTrace();
@@ -96,10 +97,10 @@ public class FileHandleController extends BaseController {
      */
     @RequestMapping(value = "/getFilesJson")
     @ResponseBody
-    public Object getFilesJson(String search, String pid){
+    public Object getFilesJson(String search, String pid, Page page){
         try {
-            List<FileModel> files = fileHandleService.getFiles(search, pid);
-            return data(success(), files);
+            PageInfo<FileModel> pageInfo = fileHandleService.getFiles(search, pid,page);
+            return data(success(), pageInfo.getList());
         } catch (Exception e) {
             e.printStackTrace();
             return data(error(),"查询失败");
@@ -142,5 +143,16 @@ public class FileHandleController extends BaseController {
         fileHandleService.testJob();
         return "testJob success";
     }
+
+    /*
+    <tr>
+                    <td colspan="2"><p th:text="'Total:' + ${page.pages}">Total page</p></td>
+                    <td><a th:href="@{/blog/pagehelper(page=1)}">first</a></td>
+                    <td><a th:href="@{/blog/pagehelper(page=${page.nextPage})}">next</a></td>
+                    <td><a th:href="@{/blog/pagehelper(page=${page.prePage})}">prex</a></td>
+                    <td><a th:href="@{/blog/pagehelper(page=${page.lastPage})}">last</a></td>
+                </tr>
+
+    * */
 
 }

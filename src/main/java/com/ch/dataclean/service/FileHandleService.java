@@ -1,11 +1,10 @@
 package com.ch.dataclean.service;
 
+import com.ch.dataclean.common.page.Page;
 import com.ch.dataclean.model.FileModel;
+import com.github.pagehelper.PageInfo;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
-
 
 public interface FileHandleService {
     /**
@@ -18,7 +17,7 @@ public interface FileHandleService {
      * @return
      * @throws Exception
      */
-    List<FileModel> getFiles(String search, String pid) throws Exception;
+    PageInfo<FileModel> getFiles(String search, String pid, Page page) throws Exception;
 
     /**
      * 下载模板文件

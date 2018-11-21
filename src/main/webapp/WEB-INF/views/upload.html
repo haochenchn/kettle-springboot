@@ -224,7 +224,7 @@
         //页面初次加载
         initTable(0);
         function initTable(pid) {
-            $('[name="table_refresh"]').load("/file/getFiles?pid="+pid);
+            $('[name="table_refresh"]').load("/file/getFiles?pageNum=1&pageSize=3&pid="+pid);
             //console.log(a.get(0))
         }
         //console.log([[${files}]]);

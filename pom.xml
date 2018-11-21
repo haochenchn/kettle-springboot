@@ -42,6 +42,8 @@
 		<kettle-version>7.0.0.0-25</kettle-version>
 		<quartz-version>2.2.1</quartz-version>
 		<beetlsql-version>2.8.11</beetlsql-version>
+		<pagehelper-version>5.1.8</pagehelper-version>
+
 		<!--<junit-version>4.12</junit-version>-->
 	</properties>
 
@@ -104,6 +106,11 @@
 			<groupId>org.mybatis.spring.boot</groupId>
 			<artifactId>mybatis-spring-boot-starter</artifactId>
 			<version>${mybatis-spring-boot-starter-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.pagehelper</groupId>
+			<artifactId>pagehelper</artifactId>
+			<version>${pagehelper-version}</version>
 		</dependency>
 		<!--jsp支持-->
 		<!--<dependency>
@@ -202,6 +209,7 @@
 			<version>2.1</version>
 		</dependency>-->
 	<!--===========================-->
+
 
 	</dependencies>
 
