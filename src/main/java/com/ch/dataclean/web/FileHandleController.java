@@ -78,9 +78,25 @@ public class FileHandleController extends BaseController {
      * 根据pid查询文件目录
      * search可以是文件名、部门名或描述
      */
+    @RequestMapping(value = "/getFilesc")
+    public Object getFilesc(String search, String pid, Model model){
+        try {
+            List<FileModel> files = fileHandleService.getFiles(search, pid);
+            model.addAttribute("files",files);
+            return "upload::tablec_refresh";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return error();
+        }
+    }
+
+    /**
+     * 根据pid查询文件目录
+     * search可以是文件名、部门名或描述
+     */
     @RequestMapping(value = "/getFilesJson")
     @ResponseBody
-    public Object getFilesJson(String search, String pid, Model model){
+    public Object getFilesJson(String search, String pid){
         try {
             List<FileModel> files = fileHandleService.getFiles(search, pid);
             return data(success(), files);
