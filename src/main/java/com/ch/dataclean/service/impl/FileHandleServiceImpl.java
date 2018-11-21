@@ -5,6 +5,7 @@ import com.ch.dataclean.common.kettle.KettleManager;
 import com.ch.dataclean.common.util.CommonUtils;
 import com.ch.dataclean.common.util.Constant;
 import com.ch.dataclean.common.util.FileUtil;
+import com.ch.dataclean.common.util.ResourceLoader;
 import com.ch.dataclean.dao.DaoSupport;
 import com.ch.dataclean.model.DataDeptModel;
 import com.ch.dataclean.model.DataFormatCheckResultVo;
@@ -14,6 +15,7 @@ import com.ch.dataclean.service.FileHandleService;
 import com.ch.dataclean.service.FormatCheckService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,7 +48,7 @@ public class FileHandleServiceImpl implements FileHandleService {
     private FormatCheckService formatCheckService;
 
     @Override
-    public FileModel fileUpload(MultipartFile file, long deptId, String desc) throws Exception {
+    public FileModel fileUpload(MultipartFile file, String deptId, String desc) throws Exception {
         String fileName = file.getOriginalFilename();
         if (!fileName.endsWith("zip")) {
             throw new BaseException(fileName+ "文件格式不是zip文件");
@@ -71,7 +73,7 @@ public class FileHandleServiceImpl implements FileHandleService {
         pFile.setFileSize(CommonUtils.formatDouble(size/1024, 2));
         pFile.setDeptId(deptId);
         pFile.setDeptName(dept.getName());
-        pFile.setPid(0); //zip文件父id为0
+        pFile.setPid("0"); //zip文件父id为0
         pFile.setImportStatus(1);
         pFile.setFileDesc(desc);
         this.saveFileModel(pFile);
@@ -89,7 +91,7 @@ public class FileHandleServiceImpl implements FileHandleService {
             final String t_relative_path = relativePath.toString();
             final String t_job_path = dept.getKettleJobPath();
             final String t_job_name = dept.getKettleJobName();
-            final long t_fileid = pFile.getId();
+            final String t_fileid = pFile.getId();
             new Thread(()->{
                 //执行kettle脚本
                 Map<String,String> variables = new HashMap<>();
@@ -169,7 +171,7 @@ public class FileHandleServiceImpl implements FileHandleService {
      * @param desc
      * @throws Exception
      */
-    public void updateFileStatus(long id, int status, String desc) throws Exception{
+    public void updateFileStatus(String id, int status, String desc) throws Exception{
         Map<String,Object> param = new HashMap<>();
         param.put("id",id);
         param.put("importStatus",status);
@@ -198,12 +200,29 @@ public class FileHandleServiceImpl implements FileHandleService {
     }
 
     @SuppressWarnings("unchecked")
-    public List<FileModel> getFiles(String search, long pid) throws Exception{
-        Map<String, Object> param = new HashMap<>();
+    public List<FileModel> getFiles(String search, String pid) throws Exception{
+        Map<String, String> param = new HashMap<>();
         param.put("search", search);
         param.put("pid", pid);
         return (List<FileModel>) dao.findForList("file.findFiles", param);
     }
+
+    public ResponseEntity<byte[]> downloadTemplateFile(String deptId) throws Exception {
+        DataDeptModel dept = dataDeptService.getDeptById(deptId);
+        if(null == dept){
+            throw new BaseException("数据部门不存在！");
+        }
+        String fileName = dept.getFileTemplate();
+        String filePath = "fileTemplates/"+ fileName;
+        File file = new File(ResourceLoader.getPath("") + filePath);
+        if(!file.exists()){
+            throw new BaseException("模板文件不存在");
+        }
+        return FileUtil.downloadFile(fileName, file);
+    }
+
+
+
 
     /*===========================以下是测试========================*/
     public Object testTrans(){

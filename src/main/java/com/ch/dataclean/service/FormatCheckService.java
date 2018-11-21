@@ -17,5 +17,5 @@ public interface FormatCheckService {
      * @return
      * @throws Exception
      */
-    DataFormatCheckResultVo formatCheck(long deptId, List<FileModel> files) throws Exception;
+    DataFormatCheckResultVo formatCheck(String deptId, List<FileModel> files) throws Exception;
 }

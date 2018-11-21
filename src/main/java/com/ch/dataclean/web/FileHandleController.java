@@ -1,5 +1,6 @@
 package com.ch.dataclean.web;
 
+import com.ch.dataclean.common.util.CommonUtils;
 import com.ch.dataclean.model.DataDeptModel;
 import com.ch.dataclean.model.FileModel;
 import com.ch.dataclean.service.DataDeptService;
@@ -27,7 +28,7 @@ public class FileHandleController extends BaseController {
     public String toUpload(Model model){
         try {
             List<DataDeptModel> depts = dataDeptService.getDepts();
-            List<FileModel> files = fileHandleService.getFiles(null,0L);
+            List<FileModel> files = fileHandleService.getFiles(null,"0");
             model.addAttribute("files", files);
             model.addAttribute("depts", depts);
         } catch (Exception e) {
@@ -41,9 +42,10 @@ public class FileHandleController extends BaseController {
      */
     @RequestMapping(value = "/fileUpload")
     @ResponseBody
-    public Object fileUpload(@RequestParam("file") MultipartFile file, long deptId, String desc){
+    public Object fileUpload(@RequestParam(value = "file", required = false) MultipartFile file, String deptId, String desc){
         if(!file.isEmpty()){
             try {
+                CommonUtils.formCheck(deptId,"请选择部门");
                 fileHandleService.fileUpload(file, deptId, desc);
                 return data(success(),"文件上传成功");
             } catch (Exception e) {
@@ -60,13 +62,29 @@ public class FileHandleController extends BaseController {
      * search可以是文件名、部门名或描述
      */
     @RequestMapping(value = "/getFiles")
-    public Object getFiles(String search, long pid){
+    public Object getFiles(String search, String pid){
         try {
             List<FileModel> files = fileHandleService.getFiles(search, pid);
             return data(success(), files);
         } catch (Exception e) {
             e.printStackTrace();
             return error();
+        }
+    }
+
+
+    /**
+     * 模板下载
+     * @param deptId
+     * @return
+     */
+    @RequestMapping(value = "/download")
+    public Object downloadTempFile(String deptId){
+        try {
+            return fileHandleService.downloadTemplateFile(deptId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return data(error(),"没有该部门的模板文件");
         }
     }
 

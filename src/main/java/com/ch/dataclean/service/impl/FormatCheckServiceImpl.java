@@ -24,7 +24,7 @@ public class FormatCheckServiceImpl implements FormatCheckService {
     /**
      * 文件格式检查开始
      */
-    public DataFormatCheckResultVo formatCheck(long deptId, List<FileModel> files) throws Exception {
+    public DataFormatCheckResultVo formatCheck(String deptId, List<FileModel> files) throws Exception {
         List<DataFormatModel> dataFormats = this.getDataFormatsByDeptid(deptId);
         if(null == dataFormats || 0 >= dataFormats.size()){
             return new DataFormatCheckResultVo(false,"未找到该部门的数据规范，无法进行数据格式校验");
@@ -41,7 +41,7 @@ public class FormatCheckServiceImpl implements FormatCheckService {
                             return resultVo;
                         }
                     }else {
-                        return new DataFormatCheckResultVo(false,"文件["+file.getName()+"]格式有误，应为"+extension);
+                        return new DataFormatCheckResultVo(false,"文件["+file.getName()+"]格式有误，应为"+dataFormat.getExtension());
                     }
                     nameFormatFlag = true;
                     break;
@@ -98,7 +98,7 @@ public class FormatCheckServiceImpl implements FormatCheckService {
      * @throws Exception
      */
     @SuppressWarnings("unchecked")
-    public List<DataFormatModel> getDataFormatsByDeptid(long deptId) throws Exception {
+    public List<DataFormatModel> getDataFormatsByDeptid(String deptId) throws Exception {
         return (List<DataFormatModel>) dao.findForList("dataFormat.findFormatsByDeptid", deptId);
     }
 

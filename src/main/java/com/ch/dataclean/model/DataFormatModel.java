@@ -9,7 +9,7 @@ import org.apache.ibatis.type.Alias;
 @Alias("dataFormat")
 public class DataFormatModel extends BaseModel{
     private String typeName; //文件类型
-    private long deptId;
+    private String deptId;
     private String fileName; //标准文件名
     private String headArr; //表头数组（以 , 分隔）
     private int beginRow; //表头所在行
@@ -26,11 +26,11 @@ public class DataFormatModel extends BaseModel{
         this.typeName = typeName;
     }
 
-    public long getDeptId() {
+    public String getDeptId() {
         return deptId;
     }
 
-    public void setDeptId(long deptId) {
+    public void setDeptId(String deptId) {
         this.deptId = deptId;
     }
 

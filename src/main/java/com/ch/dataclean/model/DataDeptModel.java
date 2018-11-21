@@ -12,6 +12,7 @@ public class DataDeptModel extends BaseModel {
     private String description;
     private String kettleJobName; //该部门对应的kettle导入job名
     private String kettleJobPath; //资源库内job相对路径，默认为/
+    private String fileTemplate; //模板文件（.zip）
 
     public DataDeptModel() {
     }
@@ -46,5 +47,13 @@ public class DataDeptModel extends BaseModel {
 
     public void setKettleJobPath(String kettleJobPath) {
         this.kettleJobPath = kettleJobPath;
+    }
+
+    public String getFileTemplate() {
+        return fileTemplate;
+    }
+
+    public void setFileTemplate(String fileTemplate) {
+        this.fileTemplate = fileTemplate;
     }
 }

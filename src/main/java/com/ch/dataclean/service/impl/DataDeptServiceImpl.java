@@ -18,7 +18,7 @@ public class DataDeptServiceImpl implements DataDeptService {
     private DaoSupport dao;
 
     @Override
-    public DataDeptModel getDeptById(long id) throws Exception {
+    public DataDeptModel getDeptById(String id) throws Exception {
         return (DataDeptModel) dao.findForObject("dataDept.findDeptById",id);
     }
 

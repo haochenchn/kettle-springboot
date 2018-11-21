@@ -15,7 +15,7 @@ public interface DataDeptService {
      * @return
      * @throws Exception
      */
-    DataDeptModel getDeptById(long id) throws Exception;
+    DataDeptModel getDeptById(String id) throws Exception;
 
     /**
      * 查找数据部门列表

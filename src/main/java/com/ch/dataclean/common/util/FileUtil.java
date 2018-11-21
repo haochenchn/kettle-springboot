@@ -14,7 +14,7 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 
 /**
- * Created by CH on 2018-11-18.
+ * Created by Aaron on 2018/11/19
  */
 public class FileUtil {
     /**
@@ -265,10 +265,9 @@ public class FileUtil {
      * @return
      * @throws IOException
      */
-    public ResponseEntity<byte[]> export(String fileName, String filePath) throws IOException {
+    public static ResponseEntity<byte[]> downloadFile(String fileName, File file) throws IOException {
 
         HttpHeaders headers = new HttpHeaders();
-        File file = new File(filePath);
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
         headers.setContentDispositionFormData("attachment", convertFileName(fileName));
 

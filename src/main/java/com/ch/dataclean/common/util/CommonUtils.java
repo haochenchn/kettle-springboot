@@ -1,5 +1,6 @@
 package com.ch.dataclean.common.util;
 
+import com.ch.dataclean.common.exception.BaseException;
 import org.apache.commons.io.FileUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -92,5 +93,17 @@ public class CommonUtils {
 		// 如果不需要四舍五入，可以使用RoundingMode.DOWN
 		nf.setRoundingMode(RoundingMode.UP);
 		return Double.parseDouble(nf.format(d));
+	}
+
+	/**
+	 * 表单空值检查
+	 * @param field
+	 * @param errorDesc
+	 * @throws BaseException
+	 */
+	public static void formCheck(String field, String errorDesc) throws BaseException {
+		if(null == field || "" == field.trim()){
+			throw new BaseException(errorDesc);
+		}
 	}
 }

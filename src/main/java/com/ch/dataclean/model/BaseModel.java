@@ -8,17 +8,17 @@ import java.util.Date;
  * Created by Aaron on 2018/11/19
  */
 public class BaseModel {
-    private long id;
+    private String id;
     private Date createtime;
     private Date modifytime;
     private String createuser;
     private String isdelete; //删除标识（0未删除1已删除）
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

@@ -18,8 +18,8 @@ public class FileModel extends BaseModel implements Serializable {
     private String path; //文件路径
     private String extension; //文件后缀
     private double fileSize; //文件大小
-    private long pid; //父文件（如果是zip文件，其pid为0，否则为zip文件的id）
-    private long deptId; //数据部门
+    private String pid; //父文件（如果是zip文件，其pid为0，否则为zip文件的id）
+    private String deptId; //数据部门
     private String deptName;
     private String fileDesc; //描述
     private int importStatus; //数据导入状态，(1正在导入2数据格式不对3已导入4导入失败)
@@ -54,19 +54,19 @@ public class FileModel extends BaseModel implements Serializable {
         this.extension = extension;
     }
 
-    public long getPid() {
+    public String getPid() {
         return pid;
     }
 
-    public void setPid(long pid) {
+    public void setPid(String pid) {
         this.pid = pid;
     }
 
-    public long getDeptId() {
+    public String getDeptId() {
         return deptId;
     }
 
-    public void setDeptId(long deptId) {
+    public void setDeptId(String deptId) {
         this.deptId = deptId;
     }
 
