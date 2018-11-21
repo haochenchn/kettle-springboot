@@ -30,8 +30,8 @@ public class FileHandleController extends BaseController {
     public String toUpload(Model model){
         try {
             List<DataDeptModel> depts = dataDeptService.getDepts();
-            List<FileModel> files = fileHandleService.getFiles(null,"0");
-            model.addAttribute("files", files);
+//            List<FileModel> files = fileHandleService.getFiles(null,"0");
+//            model.addAttribute("files", files);
             model.addAttribute("depts", depts);
         } catch (Exception e) {
             e.printStackTrace();
@@ -64,12 +64,11 @@ public class FileHandleController extends BaseController {
      * search可以是文件名、部门名或描述
      */
     @RequestMapping(value = "/getFiles")
-    public Object getFiles(String search, @RequestParam(value = "pid",defaultValue = "0") String pid){
+    public Object getFiles(String search, String pid, Model model){
         try {
             List<FileModel> files = fileHandleService.getFiles(search, pid);
-            Map<String, Object> map = new HashMap<>();
-            map.put("files", files);
-            return map;
+            model.addAttribute("files",files);
+            return "upload::table_refresh";
         } catch (Exception e) {
             e.printStackTrace();
             return error();
