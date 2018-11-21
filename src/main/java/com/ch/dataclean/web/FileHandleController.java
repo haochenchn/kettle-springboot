@@ -28,8 +28,8 @@ public class FileHandleController extends BaseController {
     public String toUpload(Model model){
         try {
             List<DataDeptModel> depts = dataDeptService.getDepts();
-            List<FileModel> files = fileHandleService.getFiles(null,"0");
-            model.addAttribute("files", files);
+//            List<FileModel> files = fileHandleService.getFiles(null,"0");
+//            model.addAttribute("files", files);
             model.addAttribute("depts", depts);
         } catch (Exception e) {
             e.printStackTrace();
@@ -43,7 +43,7 @@ public class FileHandleController extends BaseController {
     @RequestMapping(value = "/fileUpload")
     @ResponseBody
     public Object fileUpload(@RequestParam(value = "file", required = false) MultipartFile file, String deptId, String desc){
-        if(!file.isEmpty()){
+        if(null != file && !file.isEmpty()){
             try {
                 CommonUtils.formCheck(deptId,"请选择部门");
                 fileHandleService.fileUpload(file, deptId, desc);
@@ -72,7 +72,6 @@ public class FileHandleController extends BaseController {
         }
     }
 
-
     /**
      * 模板下载
      * @param deptId
@@ -88,9 +87,9 @@ public class FileHandleController extends BaseController {
         }
     }
 
-    @RequestMapping("/toUploadStatus")
+    @RequestMapping("/test")
     @ResponseBody
-    public Object toUploadStatus(){
+    public Object test(){
         /*model.addAttribute("message", "The file is empty!");
         return "/uploadStatus";*/
         return data(success(),"这仅仅是一个测试");
