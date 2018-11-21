@@ -11,7 +11,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/file")
@@ -28,8 +30,8 @@ public class FileHandleController extends BaseController {
     public String toUpload(Model model){
         try {
             List<DataDeptModel> depts = dataDeptService.getDepts();
-//            List<FileModel> files = fileHandleService.getFiles(null,"0");
-//            model.addAttribute("files", files);
+            List<FileModel> files = fileHandleService.getFiles(null,"0");
+            model.addAttribute("files", files);
             model.addAttribute("depts", depts);
         } catch (Exception e) {
             e.printStackTrace();
@@ -62,10 +64,12 @@ public class FileHandleController extends BaseController {
      * search可以是文件名、部门名或描述
      */
     @RequestMapping(value = "/getFiles")
-    public Object getFiles(String search, String pid){
+    public Object getFiles(String search, @RequestParam(value = "pid",defaultValue = "0") String pid){
         try {
             List<FileModel> files = fileHandleService.getFiles(search, pid);
-            return data(success(), files);
+            Map<String, Object> map = new HashMap<>();
+            map.put("files", files);
+            return map;
         } catch (Exception e) {
             e.printStackTrace();
             return error();

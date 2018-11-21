@@ -14,13 +14,17 @@ spring:
     mode: HTML5
     prefix: /WEB-INF/views/
     suffix: .html
-
   #编码相关
   http:
     encoding:
       charset: UTF-8
       enabled: true
       force: true
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 1024MB
+      max-request-size: 1024MB
 
 # kettle相关配置
 kettle:
