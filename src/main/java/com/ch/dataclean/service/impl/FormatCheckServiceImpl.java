@@ -32,11 +32,11 @@ public class FormatCheckServiceImpl implements FormatCheckService {
         for(FileModel file : files){
             boolean nameFormatFlag = false; //文件名称是否规范标识
             for(DataFormatModel dataFormat : dataFormats){
-                if(file.getName().contains(dataFormat.getFileName())){
+                if(file.getName().contains(dataFormat.getFileName().trim())){
                     //**********开始校验数据格式**************
-                    String extension = file.getExtension();
-                    if(null != extension && extension.equals(dataFormat.getExtension())){
-                        DataFormatCheckResultVo resultVo = checkHead(file, dataFormat);
+                    String extension = file.getExtension().trim();
+                    if(null != extension && extension.equals(dataFormat.getExtension().trim())){
+                        DataFormatCheckResultVo resultVo = this.checkHead(file, dataFormat);
                         if(!resultVo.isResult()){
                             return resultVo;
                         }
@@ -59,13 +59,13 @@ public class FormatCheckServiceImpl implements FormatCheckService {
      * 检查表头
      */
     public DataFormatCheckResultVo checkHead(FileModel file, DataFormatModel format) throws Exception {
-        String extension = file.getExtension();
-        String[] headArr = format.getHeadArr().split(",");
+        String extension = file.getExtension().trim();
+        String headArStr = format.getHeadArr().trim();
         if(extension.equals("csv")){
             InputStreamReader isr = new InputStreamReader(file.getFileInputstream());
             BufferedReader reader = new BufferedReader(isr);
-            String head = reader.readLine();//第一行信息，为标题信息
-            if(!head.equals(format.getHeadArr())){
+            String head = reader.readLine().trim();//第一行信息，为标题信息
+            if(!head.equals(headArStr)){
                 return new DataFormatCheckResultVo(false, "文件["+file.getName()+"]数据格式有误");
             }
         }else if(extension.equals("xls") || extension.equals("xlsx")){
@@ -73,17 +73,18 @@ public class FormatCheckServiceImpl implements FormatCheckService {
             //获取第一个sheet
             Sheet sheet = workbook.getSheetAt(0);
             //获取标题所在行
-            Row row = sheet.getRow(format.getBeginRow());
+            Row row = sheet.getRow(format.getBeginRow()-1);
             //获取最大列数
             int colnum = row.getPhysicalNumberOfCells();
+            String[] headArr = headArStr.split(",");
             if(colnum < headArr.length){
                 return new DataFormatCheckResultVo(false, "文件["+file.getName()+"]数据列数不够");
             }else {
                 for (int i = 0; i < colnum; i++) {
                     Cell cell = row.getCell(i);
-                    String cellValue = cell.getStringCellValue();
-                    if(!cellValue.equals(headArr[i])){
-                        return new DataFormatCheckResultVo(false, "文件["+file.getName()+"]的第i+1列数据有误");
+                    String cellValue = cell.getStringCellValue().trim();
+                    if(!cellValue.equals(headArr[i].trim())){
+                        return new DataFormatCheckResultVo(false, "文件["+file.getName()+"]的第"+(i+1)+"列数据有误");
                     }
                 }
             }
