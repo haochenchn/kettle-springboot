@@ -122,6 +122,16 @@
         .submitBtn{
             margin-right: 20px;
         }
+        .able{
+            color: #0099ff;
+            cursor: pointer;
+        }
+        .unable{
+
+        }
+        .layui-layer-content .tableWrap{
+            margin-left: 6px;
+        }
     </style>
 </head>
 <body>
@@ -160,7 +170,7 @@
     </form>
 </div>
 
-<div th:fragment="table_refresh" id="table_refresh">
+<div th:fragment="table_refresh" name="table_refresh">
     <table class="tableWrap" border="1">
         <tr>
             <th>序号</th>
@@ -173,7 +183,7 @@
         </tr>
         <tr th:each="file,infoStat : ${files}">
             <td th:text="${infoStat.count}"></td>
-            <td th:text="${file.name}"></td>
+            <td th:id="${file.id}" th:class="${file.importStatus==3||file.importStatus==4}?'able':'unable'" th:text="${file.name}"></td>
             <td th:text="${file.fileSize}+'k'"></td>
             <td th:text="${file.deptName}"></td>
             <td th:text="${file.fileDesc}"></td>
@@ -190,10 +200,35 @@
         </tr>
     </table>
 </div>
+<div th:fragment="tablec_refresh" style="display: none" name="table_refresh">
+    <table class="tableWrap" border="1">
+        <tr>
+            <th>序号</th>
+            <th>文件名</th>
+            <th>文件大小</th>
+            <th>部门</th>
+            <th>描述</th>
+        </tr>
+        <tr th:each="file,infoStat : ${files}">
+            <td th:text="${infoStat.count}"></td>
+            <td th:id="${file.id}" th:class="${file.importStatus==3||file.importStatus==4}?'able':'unable'" th:text="${file.name}"></td>
+            <td th:text="${file.fileSize}+'k'"></td>
+            <td th:text="${file.deptName}"></td>
+            <td th:text="${file.fileDesc}"></td>
+        </tr>
+    </table>
+</div>
     <script th:src="@{/jquery.min.js}"></script>
     <script th:src="@{/layer/layer.min.js}"></script>
     <script th:inline="javascript">
-        $('#table_refresh').load([[@{/file/getFiles}]]);
+        //页面初次加载
+        initTable(0);
+        function initTable(pid) {
+            $('[name="table_refresh"]').load("/file/getFiles?pid="+pid);
+            //console.log(a.get(0))
+        }
+        //console.log([[${files}]]);
+
         $('#uploadBtn').click(function () {
             $('[name="mask"]').show();
         });
@@ -205,8 +240,9 @@
             $('[name="desc"]').val('');
         });
         $('[name="deptId"]').change(function (e) {
-            var tid = $(e.target).val();
-            //console.log(tid);
+            var deptId = $(e.target).val();
+            var url = '/file/download?deptId='+ deptId;
+            $('[name="downloadLink"]').prop('href',url);
         });
 
         $('[name="submitBtn"]').click(function () {
@@ -219,13 +255,11 @@
                 formData.append("deptId",deptId);
                 formData.append("file",file);
                 formData.append("desc",desc);
-
                 console.log(formData);
                 unloadFormInit(formData);
             }else{
-                alert('请填写必要信息')
+                alert('请填写必要信息');
             }
-
         });
         function unloadFormInit(dataP) {
             var url = [[@{/file/fileUpload}]];
@@ -237,11 +271,35 @@
                 contentType: false, //不设置内容类型
                 processData: false, //不处理数据
                 success: function (data) {
-                    console.log(data);
+                    //console.log(data);
                     $('[name="mask"]').hide();
+                    initTable(0);
                 }
             })
         }
+
+        $(document).on('click', '.able' ,function (e) {
+            var pid = $(e.target).prop('id');
+            console.log(pid);
+            $.ajax({
+                type:'post',
+                url: '/file/getFilesc',
+                data: {pid:pid},
+                success: function (data) {
+                    console.log(data)
+                    var fileHtml = data;
+                    layer.open({
+                        title: '文件详情',
+                        area: ['600px','500px'],
+                        content: fileHtml,
+                        success: function () {
+                            $('.layui-layer-content [name="table_refresh"]').show();
+                        }
+                    })
+                }
+            })
+
+        })
     </script>
 </body>
 </html>
