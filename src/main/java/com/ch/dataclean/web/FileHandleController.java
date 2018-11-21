@@ -74,6 +74,21 @@ public class FileHandleController extends BaseController {
             return error();
         }
     }
+    /**
+     * 根据pid查询文件目录
+     * search可以是文件名、部门名或描述
+     */
+    @RequestMapping(value = "/getFilesJson")
+    @ResponseBody
+    public Object getFilesJson(String search, String pid, Model model){
+        try {
+            List<FileModel> files = fileHandleService.getFiles(search, pid);
+            return data(success(), files);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return data(error(),"查询失败");
+        }
+    }
 
     /**
      * 模板下载

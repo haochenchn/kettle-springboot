@@ -220,7 +220,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<classifier>exec</classifier>
+					<mainClass>com.ch.dataclean.DatacleanApplication</mainClass>
 				</configuration>
 			</plugin>
 		</plugins>
