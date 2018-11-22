@@ -30,6 +30,7 @@ public class SpringConfig {
     @Bean(name = "sqlSessionFactory")
     @Primary
     public SqlSessionFactory sqlSessionFactory(@Qualifier("dataSource") DataSource dataSource) throws Exception {
+        //此句必须要加上，不然打包后运行jar包时无法识别mybatis别名
         VFS.addImplClass(SpringBootVFS.class);
         SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
         bean.setDataSource(dataSource);
@@ -52,32 +53,6 @@ public class SpringConfig {
         return new SqlSessionTemplate(sqlSessionFactory);
     }
 
-    /*=======================以下是beetlSql的配置======================*/
-    //配置包扫描
-    /*@Bean(name = "beetlSqlScannerConfigurer")
-    public BeetlSqlScannerConfigurer getBeetlSqlScannerConfigurer() {
-        BeetlSqlScannerConfigurer conf = new BeetlSqlScannerConfigurer();
-        conf.setBasePackage("com.whhx.dataclean.dao.mapper");
-        conf.setDaoSuffix("Dao");
-        conf.setSqlManagerFactoryBeanName("sqlManagerFactoryBean");
-        return conf;
-    }
-
-    @Bean(name = "sqlManagerFactoryBean")
-    @Primary
-    public SqlManagerFactoryBean getSqlManagerFactoryBean(@Qualifier("dataSource") DataSource datasource) {
-        SqlManagerFactoryBean factory = new SqlManagerFactoryBean();
-        BeetlSqlDataSource source = new BeetlSqlDataSource();
-        source.setMasterSource(datasource);
-        factory.setCs(source);
-        factory.setDbStyle(new MySqlStyle());
-        factory.setInterceptors(new Interceptor[]{new DebugInterceptor()});
-        factory.setNc(new UnderlinedNameConversion());
-        factory.setSqlLoader(new ClasspathLoader("/"));
-        //sql文件路径
-        return factory;
-    }*/
-    /*================================================================*/
 
     @Bean(name = "KettleEnvironmentInit")
     public StartInit startInit(){

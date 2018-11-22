@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>数据导入</title>
     <!--<link rel="stylesheet" th:href="@{/upload.css}">-->
     <style>
         *{
@@ -150,7 +150,7 @@
     </style>
 </head>
 <body>
-<h1 class="uploadTitle" th:inlines="text">数据文件上传</h1>
+<h1 class="uploadTitle" th:inlines="text">数据导入</h1>
 <div class="uploadForm">
     <div class="title">
         <input class="form-control describe" id="searchInput"/>
@@ -195,6 +195,7 @@
             <th>描述</th>
             <th>导入状态</th>
             <th>导入备注</th>
+            <th>上传时间</th>
         </tr>
         <tr th:each="file,infoStat : ${rows}">
             <td th:text="${infoStat.count}"></td>
@@ -212,6 +213,7 @@
                 </div>
             </td>
             <td th:text="${file.importDesc}"></td>
+            <td th:text="${#dates.format(file.createtime,'yyyy-MM-dd HH:mm:ss')}"></td>
         </tr>
         <tr class="pagation">
             <td><a class="point" th:with="component =${'首页'}" th:text="${component}" th:onclick="initTable(0,1)">首页</a></td>
@@ -237,6 +239,7 @@
             <th>文件大小</th>
             <th>部门</th>
             <th>描述</th>
+
         </tr>
         <tr th:each="file,infoStat : ${rows}">
             <td th:text="${infoStat.count}"></td>
@@ -276,9 +279,15 @@
             }
 
         }
+        //回车事件绑定
+        $('#searchInput').bind('keypress', function(event) {
+            if (event.keyCode == "13") {
+                var searchName = $('#searchInput').val();
+                initTable(pidStart,pageNumStart,searchName);
+            }
+        });
         $('#searchBtn').click(function () {
             var searchName = $('#searchInput').val();
-            //console.log(searchName);
             initTable(pidStart,pageNumStart,searchName);
         });
         $('#uploadBtn').click(function () {
@@ -358,13 +367,13 @@
         //子表格
         function childTable(pageNumber) {
             var pageN = pageNumber?pageNumber:1;
-            //console.log(pageNumber);
+            console.log(pageNumber);
             $.ajax({
                 type:'post',
                 url: '/file/getFilesc',
                 data: {
                     pid:pid,
-                    pageSize:1,
+                    pageSize:5,
                     pageNum:pageN
                 },
                 success: function (data) {
@@ -374,9 +383,10 @@
                     //console.log(pageNumber);
                     if(pageNumber==undefined){
                         layer.open({
-                            title: '文件详情 '+pName,
+                            title: '文件详情 ['+pName+']',
                             area: ['600px','500px'],
                             content: fileHtml,
+                            btn: ['关闭'],
                             success: function () {
                                 $('.layui-layer-content [name="table_refresh"]').show();
                             }

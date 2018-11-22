@@ -208,6 +208,7 @@ public class FileHandleServiceImpl implements FileHandleService {
         Map<String, String> param = new HashMap<>();
         param.put("search", search);
         param.put("pid", pid);
+        page.setOrderBy("createtime desc");
         page.queryForPage(dao.getSqlSessionTemplate(), "file.findFiles", param, page);
         return page;
     }

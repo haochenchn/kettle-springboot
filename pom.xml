@@ -40,11 +40,8 @@
 		<javax.mail-version>1.5.6</javax.mail-version>
 		<fastjson-version>1.2.52</fastjson-version>
 		<kettle-version>7.0.0.0-25</kettle-version>
-		<quartz-version>2.2.1</quartz-version>
-		<beetlsql-version>2.8.11</beetlsql-version>
 		<pagehelper-version>5.1.8</pagehelper-version>
-
-		<!--<junit-version>4.12</junit-version>-->
+		<janino-version>2.5.16</janino-version>
 	</properties>
 
 	<dependencies>
@@ -160,7 +157,6 @@
 			<artifactId>commons-codec</artifactId>
 			<version>${commons-codec-version}</version>
 		</dependency>-->
-		<!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
@@ -187,29 +183,12 @@
 			<artifactId>kettle-dbdialog</artifactId>
 			<version>${kettle-version}</version>
 		</dependency>
-		<!-- with quartz -->
+		<!--kettle执行复杂脚本需要此包-->
 		<dependency>
-			<groupId>org.quartz-scheduler</groupId>
-			<artifactId>quartz</artifactId>
-			<version>${quartz-version}</version>
+			<groupId>org.codehaus.janino</groupId>
+			<artifactId>janino</artifactId>
+			<version>${janino-version}</version>
 		</dependency>
-        <dependency>
-            <groupId>net.sourceforge.jexcelapi</groupId>
-            <artifactId>jxl</artifactId>
-            <version>2.6.12</version>
-        </dependency>
-		<dependency>
-			<groupId>com.ibeetl</groupId>
-			<artifactId>beetlsql</artifactId>
-			<version>${beetlsql-version}</version>
-		</dependency>
-		<!--<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-vfs2</artifactId>
-			<version>2.1</version>
-		</dependency>-->
-	<!--===========================-->
-
 
 	</dependencies>
 
