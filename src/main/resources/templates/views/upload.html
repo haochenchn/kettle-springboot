@@ -181,7 +181,7 @@
             <th>导入状态</th>
             <th>导入备注</th>
         </tr>
-        <tr th:each="file,infoStat : ${files}">
+        <tr th:each="file,infoStat : ${rows}">
             <td th:text="${infoStat.count}"></td>
             <td th:id="${file.id}" th:class="${file.importStatus==3||file.importStatus==4}?'able':'unable'" th:text="${file.name}"></td>
             <td th:text="${file.fileSize}+'k'"></td>
@@ -219,7 +219,7 @@
             <th>部门</th>
             <th>描述</th>
         </tr>
-        <tr th:each="file,infoStat : ${files}">
+        <tr th:each="file,infoStat : ${rows}">
             <td th:text="${infoStat.count}"></td>
             <td th:id="${file.id}" th:class="${file.importStatus==3||file.importStatus==4}?'able':'unable'" th:text="${file.name}"></td>
             <td th:text="${file.fileSize}+'k'"></td>
