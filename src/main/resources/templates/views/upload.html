@@ -83,7 +83,7 @@
             font-weight: 600;
         }
         .tableWrap td{
-            height: 35px;
+            height: 45px;
             text-align: center;
         }
         .downloadLink{
@@ -131,6 +131,21 @@
         }
         .layui-layer-content .tableWrap{
             margin-left: 6px;
+        }
+        .pagation{
+            position: absolute;
+            top:90%;
+            right: 70px;
+        }
+        .pagation td{
+            width: 80px;
+            height: 25px;
+        }
+        .point{
+            cursor: pointer;
+        }
+        .point:hover{
+            color: #0e9aef;
         }
     </style>
 </head>
@@ -198,15 +213,19 @@
             </td>
             <td th:text="${file.importDesc}"></td>
         </tr>
-        <!--
-    <tr>
-                    <td colspan="2"><p th:text="'Total:' + ${page.pages}">Total page</p></td>
-                    <td><a th:href="@{/blog/pagehelper(page=1)}">first</a></td>
-                    <td><a th:href="@{/blog/pagehelper(page=${page.nextPage})}">next</a></td>
-                    <td><a th:href="@{/blog/pagehelper(page=${page.prePage})}">prex</a></td>
-                    <td><a th:href="@{/blog/pagehelper(page=${page.lastPage})}">last</a></td>
-                </tr>
-    -->
+        <tr class="pagation">
+            <td><a class="point" th:with="component =${'首页'}" th:text="${component}" th:onclick="initTable(0,1)">首页</a></td>
+            <td th:switch="${pageNum}">
+                <p th:case="*"><a class="point" th:onclick="initTable(0,[[${pageNum}]]-1)">上一页</a></p>
+            </td>
+            <td th:switch="${pageNum}">
+
+                <p th:case="*"><a class="point" th:onclick="initTable(0,[[${pageNum}]]+1)">下一页</a></p>
+            </td>
+            <td><a class="point" th:onclick="initTable(0,[[${pages}]])">尾页</a></td>
+            <td><a th:text="'第'+${pageNum}+'页'"></a></td>
+            <td><a th:text="'共'+${pages}+'页'"></a></td>
+        </tr>
     </table>
 
 </div>
@@ -226,18 +245,36 @@
             <td th:text="${file.deptName}"></td>
             <td th:text="${file.fileDesc}"></td>
         </tr>
+        <tr class="pagation">
+            <td><a class="point" th:with="component =${'首页'}" th:text="${component}" th:onclick="childTable(1)">首页</a></td>
+            <td th:switch="${pageNum}">
+                <p th:case="*"><a class="point" th:onclick="childTable([[${pageNum}]]-1)">上一页</a></p>
+            </td>
+            <td th:switch="${pageNum}">
+
+                <p th:case="*"><a class="point" th:onclick="childTable([[${pageNum}]]+1)">下一页</a></p>
+            </td>
+            <td><a class="point" th:onclick="childTable([[${pages}]])">尾页</a></td>
+            <td><a th:text="'第'+${pageNum}+'页'"></a></td>
+            <td><a th:text="'共'+${pages}+'页'"></a></td>
+        </tr>
     </table>
 </div>
     <script th:src="@{/jquery.min.js}"></script>
     <script th:src="@{/layer/layer.min.js}"></script>
     <script th:inline="javascript">
         //页面初次加载
-        initTable(0);
-        function initTable(pid) {
-            $('[name="table_refresh"]').load("/file/getFiles?pageNum=1&pageSize=3&pid="+pid);
-            //console.log(a.get(0))
+        initTable(0,1);
+        function initTable(pid,pageNum) {
+            if(pid==0){
+                //alert('1')
+                $('[name="table_refresh"]').load("/file/getFiles?&pageSize=10&pid="+pid+"&pageNum="+pageNum);
+            }else{
+                //alert('2')
+                $('[name="table_refresh"]').load("/file/getFilesc?&pageSize=10&pid="+pid+"&pageNum="+pageNum);
+            }
+
         }
-        //console.log([[${files}]]);
 
         $('#uploadBtn').click(function () {
             $('[name="mask"]').show();
@@ -287,29 +324,47 @@
                 }
             })
         }
-
+        var pid;
+        $('.able').unbind('click');
         $(document).on('click', '.able' ,function (e) {
-            var pid = $(e.target).prop('id');
-            console.log(pid);
+            pid = $(e.target).prop('id');
+            //console.log(pid);
+            childTable();
+        });
+
+        //子表格
+        function childTable(pageNumber) {
+            var pageN = pageNumber?pageNumber:1;
+            //console.log(pageNumber);
             $.ajax({
                 type:'post',
                 url: '/file/getFilesc',
-                data: {pid:pid},
+                data: {
+                    pid:pid,
+                    pageSize:1,
+                    pageNum:pageN
+                },
                 success: function (data) {
-                    console.log(data)
+                    //console.log(data);
                     var fileHtml = data;
-                    layer.open({
-                        title: '文件详情',
-                        area: ['600px','500px'],
-                        content: fileHtml,
-                        success: function () {
-                            $('.layui-layer-content [name="table_refresh"]').show();
-                        }
-                    })
+                    console.log(pageNumber);
+                    if(pageNumber==undefined){
+                        layer.open({
+                            title: '文件详情',
+                            area: ['600px','500px'],
+                            content: fileHtml,
+                            success: function () {
+                                $('.layui-layer-content [name="table_refresh"]').show();
+                            }
+                        })
+                    }else{
+                        $('.layui-layer-content').html(fileHtml);
+                        $('.layui-layer-content [name="table_refresh"]').show();
+                    }
+
                 }
             })
-
-        })
+        }
     </script>
 </body>
 </html>
