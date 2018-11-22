@@ -121,5 +121,12 @@ public class DaoSupport implements DAO {
         return sqlSessionTemplate.selectMap(str, obj, key);
     }
 
+    public SqlSessionTemplate getSqlSessionTemplate() {
+        return sqlSessionTemplate;
+    }
+
+    public void setSqlSessionTemplate(SqlSessionTemplate sqlSessionTemplate) {
+        this.sqlSessionTemplate = sqlSessionTemplate;
+    }
 }
 

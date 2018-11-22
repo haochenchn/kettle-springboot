@@ -203,14 +203,12 @@ public class FileHandleServiceImpl implements FileHandleService {
     }
 
     @SuppressWarnings("unchecked")
-    public PageInfo<FileModel> getFiles(String search, String pid, Page page) throws Exception{
+    public Page getFiles(String search, String pid, Page page) throws Exception{
         Map<String, String> param = new HashMap<>();
         param.put("search", search);
         param.put("pid", pid);
-        PageHelper.startPage(page.getPageNum(),page.getPageSize(),"createtime desc");
-        List<FileModel> list = (List<FileModel>) dao.findForList("file.findFiles", param);
-        PageInfo<FileModel> pageInfo = new PageInfo<>(list);
-        return pageInfo;
+        page.queryForPage(dao.getSqlSessionTemplate(), "file.findFiles", param, page);
+        return page;
     }
 
     public ResponseEntity<byte[]> downloadTemplateFile(String deptId) throws Exception {

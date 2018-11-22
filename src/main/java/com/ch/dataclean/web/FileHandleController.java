@@ -67,8 +67,9 @@ public class FileHandleController extends BaseController {
     public Object getFiles(String search, String pid, Page page, Model model){
         try {
              //Page page = new Page();
-            PageInfo<FileModel> pageInfo = fileHandleService.getFiles(search, pid,page);
-            model.addAttribute("files",pageInfo.getList());
+            fileHandleService.getFiles(search, pid,page);
+            model.addAttribute("page",page);
+            model.addAttribute("rows",page.getRows());
             return "upload::table_refresh";
         } catch (Exception e) {
             e.printStackTrace();
@@ -82,8 +83,9 @@ public class FileHandleController extends BaseController {
     @RequestMapping(value = "/getFilesc")
     public Object getFilesc(String search, String pid, Page page, Model model){
         try {
-            PageInfo<FileModel> pageInfo = fileHandleService.getFiles(search, pid,page);
-            model.addAttribute("files",pageInfo.getList());
+            fileHandleService.getFiles(search, pid,page);
+            model.addAttribute("page",page);
+            model.addAttribute("rows",page.getRows());
             return "upload::tablec_refresh";
         } catch (Exception e) {
             e.printStackTrace();
@@ -99,8 +101,8 @@ public class FileHandleController extends BaseController {
     @ResponseBody
     public Object getFilesJson(String search, String pid, Page page){
         try {
-            PageInfo<FileModel> pageInfo = fileHandleService.getFiles(search, pid,page);
-            return data(success(), pageInfo.getList());
+            fileHandleService.getFiles(search, pid,page);
+            return data(success(), page);
         } catch (Exception e) {
             e.printStackTrace();
             return data(error(),"查询失败");

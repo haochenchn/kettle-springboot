@@ -17,7 +17,7 @@ public interface FileHandleService {
      * @return
      * @throws Exception
      */
-    PageInfo<FileModel> getFiles(String search, String pid, Page page) throws Exception;
+    Page getFiles(String search, String pid, Page page) throws Exception;
 
     /**
      * 下载模板文件
