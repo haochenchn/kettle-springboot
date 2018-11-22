@@ -17,7 +17,7 @@ public class Constant extends Const {
 	/**
 	 * 文件上传路径（相对于系统基本路径）
 	 */
-	public static final String UPLOAD_PATH = "dataclean/";
+	public static final String UPLOAD_PATH = "kettle/data/";
 
 	/**
 	 * 文件导入状态

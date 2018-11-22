@@ -6,7 +6,6 @@ import com.ch.dataclean.common.page.Page;
 import com.ch.dataclean.common.util.CommonUtils;
 import com.ch.dataclean.common.util.Constant;
 import com.ch.dataclean.common.util.FileUtil;
-import com.ch.dataclean.common.util.ResourceLoader;
 import com.ch.dataclean.dao.DaoSupport;
 import com.ch.dataclean.model.DataDeptModel;
 import com.ch.dataclean.model.DataFormatCheckResultVo;
@@ -16,6 +15,7 @@ import com.ch.dataclean.service.FileHandleService;
 import com.ch.dataclean.service.FormatCheckService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -36,6 +36,9 @@ import java.util.zip.ZipInputStream;
 @Service(value = "fileHandleService")
 public class FileHandleServiceImpl implements FileHandleService {
     Logger logger = Logger.getLogger(FileHandleServiceImpl.class);
+
+    @Value("${kettle.templates.path}")
+    private String DATA_TEMPLATES_PATH;
 
     @Resource(name = "daoSupport")
     private DaoSupport dao;
@@ -214,16 +217,13 @@ public class FileHandleServiceImpl implements FileHandleService {
         if(null == dept){
             throw new BaseException("数据部门不存在！");
         }
-        String fileName = dept.getFileTemplate();
-        String filePath = "fileTemplates/"+ fileName;
-        File file = new File(ResourceLoader.getPath("") + filePath);
+        String filePath = DATA_TEMPLATES_PATH+ "/" + dept.getFileTemplate();
+        File file = new File(filePath);
         if(!file.exists()){
             throw new BaseException("模板文件不存在");
         }
-        return FileUtil.downloadFile(fileName, file);
+        return FileUtil.downloadFile(dept.getFileTemplate(), file);
     }
-
-
 
 
     /*===========================以下是测试========================*/

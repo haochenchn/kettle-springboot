@@ -29,10 +29,12 @@ spring:
 # kettle相关配置
 kettle:
   filerepository:
-   path: D:/SoftData/Kettle-repo/test
-   id: kettleRepo
-   name: kettleRepo
-   description: 恩施kettle文件资源库
+    path: D:/SoftData/Kettle-repo/test
+    id: kettleRepo
+    name: kettleRepo
+    description: 恩施kettle文件资源库
+  templates: #数据模板文件路径
+    path: D:/SoftData/Kettle-repo/templates
   log:
     level: basic  # 目前不考虑，对应nothing  error  minimal  basic  detailed  debug  rowlevel
     path: D:/log/kettle_log
