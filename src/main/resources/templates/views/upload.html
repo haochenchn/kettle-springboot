@@ -279,7 +279,7 @@
         $('#searchBtn').click(function () {
             var searchName = $('#searchInput').val();
             //console.log(searchName);
-            initTable(pidStart,pageNumStart,searchName)
+            initTable(pidStart,pageNumStart,searchName);
         });
         $('#uploadBtn').click(function () {
             $('[name="mask"]').show();
@@ -336,7 +336,9 @@
                         })
                     }else {
                         layer.msg(data.data,{
-                            icon:2
+                            icon:2,
+                            btn:['确认'],
+                            time:10000
                         })
                     }
 
