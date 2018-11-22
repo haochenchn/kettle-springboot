@@ -1,7 +1,5 @@
 package com.ch.dataclean.common.page;
 
-import com.ch.dataclean.common.exception.BaseException;
-import com.ch.dataclean.model.FileModel;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -10,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Description:
+ * Description: pagehelper分页实体类
  * Created by Aaron on 2018/11/21
  */
 public class Page<T> {

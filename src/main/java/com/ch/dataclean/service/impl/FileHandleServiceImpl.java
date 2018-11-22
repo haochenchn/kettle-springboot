@@ -14,8 +14,6 @@ import com.ch.dataclean.model.FileModel;
 import com.ch.dataclean.service.DataDeptService;
 import com.ch.dataclean.service.FileHandleService;
 import com.ch.dataclean.service.FormatCheckService;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

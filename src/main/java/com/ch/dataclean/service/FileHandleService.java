@@ -2,7 +2,6 @@ package com.ch.dataclean.service;
 
 import com.ch.dataclean.common.page.Page;
 import com.ch.dataclean.model.FileModel;
-import com.github.pagehelper.PageInfo;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
