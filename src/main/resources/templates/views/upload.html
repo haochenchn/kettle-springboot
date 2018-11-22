@@ -153,9 +153,9 @@
 <h1 class="uploadTitle" th:inlines="text">数据文件上传</h1>
 <div class="uploadForm">
     <div class="title">
-        <input class="form-control describe"/>
+        <input class="form-control describe" id="searchInput"/>
     </div>
-    <div class="title"><input class="submitBtn" type="button" value="搜&nbsp;索"/></div>
+    <div class="title"><input class="submitBtn" id="searchBtn" type="button" value="搜&nbsp;索"/></div>
     <div class="title"><input class="uploadBtn" id="uploadBtn" type="button" value="上&nbsp;传"/></div>
 </div>
 <div class="mask" name="mask">
@@ -264,18 +264,23 @@
     <script th:src="@{/layer/layer.min.js}"></script>
     <script th:inline="javascript">
         //页面初次加载
-        initTable(0,1);
-        function initTable(pid,pageNum) {
-            if(pid==0){
-                //alert('1')
+        var pidStart = 0;
+        var pageNumStart = 1;
+        initTable(pidStart,pageNumStart);
+        function initTable(pid,pageNum,search) {
+            if(!search){
                 $('[name="table_refresh"]').load("/file/getFiles?&pageSize=10&pid="+pid+"&pageNum="+pageNum);
             }else{
-                //alert('2')
-                $('[name="table_refresh"]').load("/file/getFilesc?&pageSize=10&pid="+pid+"&pageNum="+pageNum);
+                //alert(search);
+                $('[name="table_refresh"]').load("/file/getFiles?&pageSize=10&pid="+pid+"&pageNum="+pageNum+"&search="+search);
             }
 
         }
-
+        $('#searchBtn').click(function () {
+            var searchName = $('#searchInput').val();
+            //console.log(searchName);
+            initTable(pidStart,pageNumStart,searchName)
+        });
         $('#uploadBtn').click(function () {
             $('[name="mask"]').show();
         });
@@ -319,16 +324,32 @@
                 processData: false, //不处理数据
                 success: function (data) {
                     //console.log(data);
-                    $('[name="mask"]').hide();
-                    initTable(0);
+                    if(data.state==1){
+                        $('[name="mask"]').hide();
+                        initTable(pidStart,pageNumStart);
+                        //清空操作
+                        $('[name="deptId"]').val('请选择部门');
+                        $('[name="file"]').val('');
+                        $('[name="desc"]').val('');
+                        layer.msg(data.data,{
+                            icon:1
+                        })
+                    }else {
+                        layer.msg(data.data,{
+                            icon:2
+                        })
+                    }
+
                 }
             })
         }
         var pid;
+        var pName;
         $('.able').unbind('click');
         $(document).on('click', '.able' ,function (e) {
             pid = $(e.target).prop('id');
-            //console.log(pid);
+            pName = $(e.target).text();
+            console.log(pName);
             childTable();
         });
 
@@ -347,23 +368,24 @@
                 success: function (data) {
                     //console.log(data);
                     var fileHtml = data;
-                    console.log(pageNumber);
+
+                    //console.log(pageNumber);
                     if(pageNumber==undefined){
                         layer.open({
-                            title: '文件详情',
+                            title: '文件详情 '+pName,
                             area: ['600px','500px'],
                             content: fileHtml,
                             success: function () {
                                 $('.layui-layer-content [name="table_refresh"]').show();
                             }
-                        })
+                        });
                     }else{
                         $('.layui-layer-content').html(fileHtml);
                         $('.layui-layer-content [name="table_refresh"]').show();
                     }
 
                 }
-            })
+            });
         }
     </script>
 </body>
