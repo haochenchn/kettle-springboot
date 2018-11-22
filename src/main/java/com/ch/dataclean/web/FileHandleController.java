@@ -66,7 +66,11 @@ public class FileHandleController extends BaseController {
         try {
              //Page page = new Page();
             fileHandleService.getFiles(search, pid,page);
-            model.addAttribute("page",page);
+//            model.addAttribute("page",page);
+            model.addAttribute("pages",page.getPages());
+            model.addAttribute("pageNum",page.getPageNum());
+            model.addAttribute("pageSize",page.getPageSize());
+
             model.addAttribute("rows",page.getRows());
             return "upload::table_refresh";
         } catch (Exception e) {
@@ -82,7 +86,10 @@ public class FileHandleController extends BaseController {
     public Object getFilesc(String search, String pid, Page page, Model model){
         try {
             fileHandleService.getFiles(search, pid,page);
-            model.addAttribute("page",page);
+//            model.addAttribute("page",page);
+            model.addAttribute("pages",page.getPages());
+            model.addAttribute("pageNum",page.getPageNum());
+            model.addAttribute("pageSize",page.getPageSize());
             model.addAttribute("rows",page.getRows());
             return "upload::tablec_refresh";
         } catch (Exception e) {

@@ -12,8 +12,8 @@ import java.util.Map;
  * Created by Aaron on 2018/11/21
  */
 public class Page<T> {
-    private int pageNum;
-    private int pageSize;
+    private int pageNum = 1;
+    private int pageSize = 10;
     private int startRow;
     private int endRow;
     private long total;
