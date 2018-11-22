@@ -198,7 +198,17 @@
             </td>
             <td th:text="${file.importDesc}"></td>
         </tr>
+        <!--
+    <tr>
+                    <td colspan="2"><p th:text="'Total:' + ${page.pages}">Total page</p></td>
+                    <td><a th:href="@{/blog/pagehelper(page=1)}">first</a></td>
+                    <td><a th:href="@{/blog/pagehelper(page=${page.nextPage})}">next</a></td>
+                    <td><a th:href="@{/blog/pagehelper(page=${page.prePage})}">prex</a></td>
+                    <td><a th:href="@{/blog/pagehelper(page=${page.lastPage})}">last</a></td>
+                </tr>
+    -->
     </table>
+
 </div>
 <div th:fragment="tablec_refresh" style="display: none" name="table_refresh">
     <table class="tableWrap" border="1">
