@@ -80,7 +80,7 @@ public class FormatCheckServiceImpl implements FormatCheckService {
             if(colnum < headArr.length){
                 return new DataFormatCheckResultVo(false, "文件["+file.getName()+"]数据列数不够");
             }else {
-                for (int i = 0; i < colnum; i++) {
+                for (int i = 0; i < headArr.length; i++) {
                     Cell cell = row.getCell(i);
                     String cellValue = cell.getStringCellValue().trim();
                     if(!cellValue.equals(headArr[i].trim())){
