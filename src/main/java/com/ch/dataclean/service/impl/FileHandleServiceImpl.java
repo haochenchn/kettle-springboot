@@ -16,12 +16,12 @@ import com.ch.dataclean.service.FormatCheckService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
@@ -83,12 +83,15 @@ public class FileHandleServiceImpl implements FileHandleService {
         this.saveFileModel(pFile);
         List<FileModel> cFiles = this.getUnzipedFiles(file, pFile);
         if(null == cFiles || 0 == cFiles.size()){
-            throw new BaseException(fileName + "文件解压失败！");
+            throw new BaseException(fileName + "压缩包内未发现文件！");
         }
         //******************************数据格式检查**************************************
         DataFormatCheckResultVo result = formatCheckService.formatCheck(deptId, cFiles);
         if(result.isResult()){ //格式校验通过
             //***************************保存文件***************************************
+            //清空重新再获取一次文件。
+            cFiles = null;
+            cFiles = this.getUnzipedFiles(file, pFile);
             this.writeToFile(cFiles);
             //***************************单独启一个线程跑kettle*************************
             //线程内要用到的值，设为final
@@ -191,11 +194,14 @@ public class FileHandleServiceImpl implements FileHandleService {
             File destFile = FileUtil.getFile(FileUtil.getBasePath(relativePath));
             FileOutputStream fos = new FileOutputStream(destFile);
             InputStream fis = fileModel.getFileInputstream();
-            byte[] buf = new byte[fis.available()];
-            //读取源文件
-            fis.read(buf);
-            //将缓冲区内的数据写入到目标文件
-            fos.write(buf);
+            //创建一个缓冲区
+            byte[] buf = new byte[1024];
+            //判断输入流中的数据是否已经读完的标识
+            int len = 0;
+            //循环将输入流读入到缓冲区当中，(len=in.read(buffer))>0就表示in里面还有数据
+            while((len=fis.read(buf))>0){
+                fos.write(buf,0,len);
+            }
             fos.flush();
             fos.close();
             fis.close();
@@ -213,17 +219,13 @@ public class FileHandleServiceImpl implements FileHandleService {
         return page;
     }
 
-    public ResponseEntity<byte[]> downloadTemplateFile(String deptId) throws Exception {
+    public void downloadTemplateFile(HttpServletResponse response, String deptId) throws Exception {
         DataDeptModel dept = dataDeptService.getDeptById(deptId);
         if(null == dept){
             throw new BaseException("数据部门不存在！");
         }
         String filePath = DATA_TEMPLATES_PATH+ "/" + dept.getFileTemplate();
-        File file = new File(filePath);
-        if(!file.exists()){
-            throw new BaseException("模板文件不存在");
-        }
-        return FileUtil.downloadFile(dept.getFileTemplate(), file);
+        FileUtil.downLoad(response, filePath, false);
     }
 
 

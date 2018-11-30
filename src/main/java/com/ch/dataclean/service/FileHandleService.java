@@ -2,8 +2,9 @@ package com.ch.dataclean.service;
 
 import com.ch.dataclean.common.page.Page;
 import com.ch.dataclean.model.FileModel;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletResponse;
 
 public interface FileHandleService {
     /**
@@ -21,10 +22,8 @@ public interface FileHandleService {
     /**
      * 下载模板文件
      * @param deptId 部门id
-     * @return
-     * @throws Exception
      */
-    ResponseEntity<byte[]> downloadTemplateFile(String deptId) throws Exception;
+    void downloadTemplateFile(HttpServletResponse response, String deptId) throws Exception;
 
     Object testTrans();
     Object testJob();

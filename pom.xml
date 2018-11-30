@@ -183,11 +183,16 @@
 			<artifactId>kettle-dbdialog</artifactId>
 			<version>${kettle-version}</version>
 		</dependency>
-		<!--kettle执行复杂脚本需要此包-->
+		<!--kettle执行复杂脚本需要此包，如执行js组件-->
 		<dependency>
 			<groupId>org.codehaus.janino</groupId>
 			<artifactId>janino</artifactId>
 			<version>${janino-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.birt.runtime.3_7_1</groupId>
+			<artifactId>org.mozilla.javascript</artifactId>
+			<version>1.7.2</version>
 		</dependency>
 
 	</dependencies>

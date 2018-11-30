@@ -302,8 +302,12 @@
         });
         $('[name="deptId"]').change(function (e) {
             var deptId = $(e.target).val();
-            var url = '/file/download?deptId='+ deptId;
-            $('[name="downloadLink"]').prop('href',url);
+            if("请选择部门" == deptId){
+                $('[name="downloadLink"]').removeAttr('href');
+            }else {
+                var url = '/file/download?deptId=' + deptId;
+                $('[name="downloadLink"]').prop('href', url);
+            }
         });
 
         $('[name="submitBtn"]').click(function () {

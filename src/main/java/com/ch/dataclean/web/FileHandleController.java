@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Controller
@@ -120,13 +121,16 @@ public class FileHandleController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/download")
-    public Object downloadTempFile(String deptId){
+    @ResponseBody
+    public Object downloadTempFile(HttpServletResponse response, String deptId){
         try {
-            return fileHandleService.downloadTemplateFile(deptId);
+            fileHandleService.downloadTemplateFile(response, deptId);
+            return data(success(),"文件下载成功");
         } catch (Exception e) {
             e.printStackTrace();
-            return data(error(),"没有该部门的模板文件");
+            return data(error(),e.getMessage());
         }
+
     }
 
     @RequestMapping("/test")
@@ -151,15 +155,5 @@ public class FileHandleController extends BaseController {
         return "testJob success";
     }
 
-    /*
-    <tr>
-                    <td colspan="2"><p th:text="'Total:' + ${page.pages}">Total page</p></td>
-                    <td><a th:href="@{/blog/pagehelper(page=1)}">first</a></td>
-                    <td><a th:href="@{/blog/pagehelper(page=${page.nextPage})}">next</a></td>
-                    <td><a th:href="@{/blog/pagehelper(page=${page.prePage})}">prex</a></td>
-                    <td><a th:href="@{/blog/pagehelper(page=${page.lastPage})}">last</a></td>
-                </tr>
-
-    * */
 
 }

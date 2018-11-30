@@ -5,9 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
@@ -202,68 +202,7 @@ public class FileUtil {
     }
 
     /**
-     * 常规文件下载方法
-     * @param fileName 下载后的文件名
-     * @param filePath 文件全路径
-     * @param request
-     * @param response
-     * @return
-     */
-    public static String downloadFile(String fileName , String filePath, HttpServletRequest request, HttpServletResponse response){
-        response.setContentType("text/html;charset=utf-8");
-        try {
-            request.setCharacterEncoding("UTF-8");
-        } catch (UnsupportedEncodingException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        }
-
-        java.io.BufferedInputStream bis = null;
-        java.io.BufferedOutputStream bos = null;
-
-        String downLoadPath = filePath;  //注意不同系统的分隔符
-        //	String downLoadPath =filePath.replaceAll("/", "\\\\\\\\");   //replace replaceAll区别 *****
-        System.out.println(downLoadPath);
-
-        try {
-            long fileLength = new File(downLoadPath).length();
-            response.setContentType("application/x-msdownload;");
-            response.setHeader("Content-disposition", "attachment; filename=" + new String(fileName.getBytes("utf-8"), "ISO8859-1"));
-            response.setHeader("Content-Length", String.valueOf(fileLength));
-            bis = new BufferedInputStream(new FileInputStream(downLoadPath));
-            bos = new BufferedOutputStream(response.getOutputStream());
-            byte[] buff = new byte[2048];
-            int bytesRead;
-            while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
-                bos.write(buff, 0, bytesRead);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (bis != null)
-                try {
-                    bis.close();
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            if (bos != null)
-                try {
-                    bos.close();
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-        }
-        return null;
-    }
-
-    /**
      * springmvc文件下载，返回ResponseEntity
-     * @param fileName
-     * @param filePath
-     * @return
-     * @throws IOException
      */
     public static ResponseEntity<byte[]> downloadFile(String fileName, File file) throws IOException {
 
@@ -291,6 +230,55 @@ public class FileUtil {
                 .replaceAll("%7B", "\\{").replaceAll("%7D", "\\}");
         return convertFileName;
     }
+
+    /**
+     * 文件下载
+     * @param response
+     * @param filePath 文件路径
+     * @param isOnLine 是否在线预览
+     * @throws Exception
+     */
+    public static void downLoad(HttpServletResponse response, String filePath, boolean isOnLine) throws Exception {
+        File f = new File(filePath);
+        if (!f.exists()) {
+            response.sendError(404, "文件不存在!");
+            return;
+        }
+        BufferedInputStream bis = null;
+        OutputStream out = null;
+        try{
+            bis = new BufferedInputStream(new FileInputStream(f));
+            byte[] buf = new byte[1024];
+            int len = 0;
+
+            response.reset(); // 非常重要
+            if (isOnLine) { // 在线打开方式
+                URL u = new URL("file:///" + filePath);
+                response.setContentType(u.openConnection().getContentType());
+                response.setHeader("Content-Disposition", "inline; filename=" + convertFileName(f.getName()));
+                // 文件名应该编码成UTF-8
+            } else { // 纯下载方式
+                response.setContentType("application/x-msdownload");
+                response.setHeader("Content-Disposition", "attachment; filename=" + convertFileName(f.getName()));
+            }
+            out = response.getOutputStream();
+            while ((len = bis.read(buf)) > 0) {
+                out.write(buf, 0, len);
+            }
+            out.close();
+            bis.close();
+        }catch (Exception e){
+            throw e;
+        }finally {
+            if(out != null){
+                out.close();
+            }
+            if(bis != null){
+                bis.close();
+            }
+        }
+    }
+
 
     /**
      * 根据路径获取
