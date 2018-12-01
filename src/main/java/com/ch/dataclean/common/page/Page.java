@@ -89,7 +89,7 @@ public class Page<T> {
     }
 
     /**
-     * 分页查询
+     * 分页查询(如需排序，请先设置排序参数，如"createtime desc")
      * @param sqlSessionTemplate
      * @param sqlMappingStr
      * @param param

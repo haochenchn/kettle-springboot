@@ -42,6 +42,8 @@
 		<kettle-version>7.0.0.0-25</kettle-version>
 		<pagehelper-version>5.1.8</pagehelper-version>
 		<janino-version>2.5.16</janino-version>
+		<javascript-version>1.7.2</javascript-version>
+		<jxl-version>2.6.12</jxl-version>
 	</properties>
 
 	<dependencies>
@@ -152,11 +154,6 @@
 			<version>${poi-ooxml-version}</version>
 		</dependency>
 
-		<!--<dependency>
-			<groupId>commons-codec</groupId>
-			<artifactId>commons-codec</artifactId>
-			<version>${commons-codec-version}</version>
-		</dependency>-->
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
@@ -192,9 +189,14 @@
 		<dependency>
 			<groupId>org.eclipse.birt.runtime.3_7_1</groupId>
 			<artifactId>org.mozilla.javascript</artifactId>
-			<version>1.7.2</version>
+			<version>${javascript-version}</version>
 		</dependency>
-
+		<!-- kettle plugin excel-->
+		<dependency>
+			<groupId>net.sourceforge.jexcelapi</groupId>
+			<artifactId>jxl</artifactId>
+			<version>${jxl-version}</version>
+		</dependency>
 	</dependencies>
 
 	<build>
